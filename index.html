@@ -76,7 +76,11 @@
             body { padding: 15px; }
             .controls { flex-direction: column; gap: 10px; margin-bottom: 20px; }
             .controls input, .controls select { width: 100%; }
-            
+            .controls input, .controls select {
+                width: 100%;
+                min-width: unset; /* Убираем min-width: 200px */
+                box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+            }
             .grid { 
                 display: flex; 
                 overflow-x: auto; 
