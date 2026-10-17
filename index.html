@@ -43,7 +43,7 @@
         .card .section-tag { display: inline-block; font-size: 11px; background: var(--tag-bg); padding: 4px 8px; border-radius: 4px; margin-bottom: 12px; color: var(--tag-text); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;}
 
         .card .formula {
-            font-size: 18px;
+            font-size: 1.6em;
             text-align: center;
             margin: 15px 0;
             min-height: 40px;
@@ -99,7 +99,7 @@
             .card { 
                 flex: 0 0 85vw; 
                 scroll-snap-align: center; 
-                height: 35vh;
+                height: 40vh;
             }
             
             .card:last-child {
@@ -219,7 +219,7 @@
             { title: "Количество теплоты фазовые переходы", section: "Тест 19. Количество теплоты", formula: `$$Q = qm$$`, desc: "Количество теплоты при сгорании топлива." },
             { title: "Уравнение теплового баланса", section: "Тест 19. Количество теплоты", formula: `$$Q_1 + Q_2 + ... + Q_n = 0$$`, desc: "В замкнутой системе." },
             // ТЕСТ 20
-            { title: "Работа цикла и КПД", section: "Тест 20. Циклы. Тепловые двигатели", formula: `$$A = Q_1 - |Q_2|, \\quad \\eta = \\frac{A}{Q_1} \\cdot 100\\%$$`, desc: "Работа теплового двигателя и его термический КПД." },
+            { title: "Работа цикла и КПД", section: "Тест 20. Циклы. Тепловые двигатели", formula: `$$A = Q_1 - |Q_2|, \\newline \\eta = \\frac{A}{Q_1} \\cdot 100\\%$$`, desc: "Работа теплового двигателя и его термический КПД." },
             { title: "КПД цикла Карно", section: "Тест 20. Циклы. Тепловые двигатели", formula: `$$\\eta_K = \\frac{T_1 - T_2}{T_1} \\cdot 100\\%$$`, desc: "Максимальный КПД для температур нагревателя $T_1$ и холодильника $T_2$." },
             // ТЕСТ 21
             { title: "Закон Кулона", section: "Тест 21. Закон сохранения электрического заряда. Закон Кулона", formula: `$$F = k \\frac{|q_1 q_2|}{r^2} = \\frac{1}{4\\pi\\varepsilon_0} \\frac{|q_1 q_2|}{r^2}$$`, desc: "Сила взаимодействия точечных зарядов в вакууме." },
@@ -276,7 +276,8 @@
             { title: "Законы отражения и преломления", section: "Тест 32. Геометрическая оптика", formula: `$$\\alpha = \\beta, \\quad \\frac{\\sin\\alpha}{\\sin\\gamma} = \\frac{n_2}{n_1}$$`, desc: "Угол падения равен углу отражения; закон Снеллиуса." },
             { title: "Абсолютный показатель преломления и полное отражение", section: "Тест 32. Геометрическая оптика", formula: `$$n = \\frac{c}{v}, \\quad \\sin\\alpha_0 = \\frac{n_2}{n_1}$$`, desc: "Скорость света в среде и предельный угол полного отражения." },
             // ТЕСТ 33
-            { title: "Формула тонкой линзы и увеличение", section: "Тест 33. Линзы", formula: `$$\\pm \\frac{1}{F} = \\pm \\frac{1}{d} \\pm \\frac{1}{f}, \\quad \\Gamma = \\frac{H}{h} = \\frac{f}{d}$$`, desc: "Связь фокуса, расстояний и линейного увеличения." },
+            { title: "Формула тонкой линзы", section: "Тест 33. Линзы", formula: `$$\\pm \\frac{1}{F} = \\pm \\frac{1}{d} \\pm \\frac{1}{f}$$`, desc: "Связь фокусного расстояния с растояниями до предмета и изображения." },
+            { title: "Линейное (поперечное) увеличение", section: "Тест 33. Линзы", formula: `$$\\Gamma = \\frac{H}{h} = \\frac{f}{d}$$`, desc: "Линейное увеличение через размер изображения и предмета или расстояния." },
             { title: "Оптическая сила", section: "Тест 33. Линзы", formula: `$$D = \\frac{1}{F}$$`, desc: "Измеряется в диоптриях (дптр)." },
             // Тест 34
             { title: "Интерференция", section: "Тест 34. Волновая оптика", formula: `$$\\delta = m\\lambda,\\newline \\quad \\delta = \\frac{(2m + 1)}{2}\\lambda$$`, desc: "Условие максимума и минимума для оптической разности хода." },
