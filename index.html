@@ -1,358 +1,1417 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Формулы по физике (ЦТ / Тренажер)</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script>
     <style>
-        :root { --bg: #f4f6f8; --card: #ffffff; --accent: #2c3e50; --border: #dfe4ea; --tag-bg: #eef2f5; --tag-text: #7f8c8d; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--accent); margin: 0; padding: 20px; }
-        h1 { text-align: center; margin-bottom: 10px; font-size: 24px; }
-        .subtitle { text-align: center; color: var(--tag-text); margin-bottom: 25px; font-size: 14px; }
-        .controls { display: flex; gap: 15px; max-width: 900px; margin: 0 auto 30px; flex-wrap: wrap; }
-        .controls input, .controls select { 
-            flex: 1; padding: 12px 15px; font-size: 16px; border: 1px solid var(--border); 
-            border-radius: 8px; background: var(--card); min-width: 200px; outline: none;
+      :root {
+        --bg: #f4f6f8;
+        --card: #ffffff;
+        --accent: #2c3e50;
+        --border: #dfe4ea;
+        --tag-bg: #eef2f5;
+        --tag-text: #7f8c8d;
+      }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--accent);
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 24px;
+      }
+      .subtitle {
+        text-align: center;
+        color: var(--tag-text);
+        margin-bottom: 25px;
+        font-size: 14px;
+      }
+      .controls {
+        display: flex;
+        gap: 15px;
+        max-width: 900px;
+        margin: 0 auto 30px;
+        flex-wrap: wrap;
+      }
+      .controls input,
+      .controls select {
+        flex: 1;
+        padding: 12px 15px;
+        font-size: 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--card);
+        min-width: 200px;
+        outline: none;
+      }
+      .controls input:focus,
+      .controls select:focus {
+        border-color: #3498db;
+      }
+
+      /* Базовая сетка для десктопа */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+        grid-auto-rows: 1fr; /* Заставляет все карточки в ряду быть одинаковой высоты */
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        /* --- НОВЫЕ СВОЙСТВА ДЛЯ ПРИЖАТИЯ К НИЗУ --- */
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      }
+      .card h3 {
+        margin: 0 0 10px 0;
+        font-size: 17px;
+        color: #2980b9;
+      }
+      .card .section-tag {
+        display: inline-block;
+        font-size: 11px;
+        background: var(--tag-bg);
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-bottom: 12px;
+        color: var(--tag-text);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .card .formula {
+        font-size: 1.6em;
+        text-align: center;
+        margin: 15px 0;
+        min-height: 40px;
+        max-width: 100%;
+        overflow-x: auto;
+        line-height: 1.8;
+        flex: 1; /* Занимает всё свободное пространство */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card .formula .katex-display {
+        margin: 0.5em 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+      .card .desc {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.4;
+        /* --- МАГИЯ: этот отступ займет всё свободное пространство и прижмет блок к низу --- */
+        margin-top: auto;
+        border-top: 1px dashed var(--border);
+        padding-top: 10px;
+      }
+      .empty {
+        text-align: center;
+        color: #95a5a6;
+        grid-column: 1 / -1;
+        padding: 40px;
+        font-size: 18px;
+      }
+
+      /* ========================================== */
+      /* МОБИЛЬНАЯ ВЕРСИЯ СО СВАЙПОМ (Scroll Snap)  */
+      /* ========================================== */
+      @media (max-width: 768px) {
+        body {
+          padding: 15px;
         }
-        .controls input:focus, .controls select:focus { border-color: #3498db; }
-        
-        /* Базовая сетка для десктопа */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 20px; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            grid-auto-rows: 1fr; /* Заставляет все карточки в ряду быть одинаковой высоты */
+        .controls {
+          flex-direction: column;
+          gap: 10px;
+          margin-bottom: 20px;
+        }
+        .controls input,
+        .controls select {
+          width: 100%;
+        }
+        .controls input,
+        .controls select {
+          width: 100%;
+          min-width: unset; /* Убираем min-width: 200px */
+          box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+        }
+        .grid {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          gap: 16px;
+          padding: 10px 5px 30px 5px;
+          margin: 0 -5px;
+          scrollbar-width: none;
+          align-items: stretch; /* Гарантирует одинаковую высоту карточек при свайпе */
+        }
+        .grid::-webkit-scrollbar {
+          display: none;
         }
 
-        .card { 
-            background: var(--card); border: 1px solid var(--border); border-radius: 12px; 
-            padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s;
-            /* --- НОВЫЕ СВОЙСТВА ДЛЯ ПРИЖАТИЯ К НИЗУ --- */
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            box-sizing: border-box;
-        }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
-        .card h3 { margin: 0 0 10px 0; font-size: 17px; color: #2980b9; }
-        .card .section-tag { display: inline-block; font-size: 11px; background: var(--tag-bg); padding: 4px 8px; border-radius: 4px; margin-bottom: 12px; color: var(--tag-text); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;}
-
-        .card .formula {
-            font-size: 1.6em;
-            text-align: center;
-            margin: 15px 0;
-            min-height: 40px;
-            max-width: 100%;
-            overflow-x: auto;
-            line-height: 1.8;
-            flex: 1; /* Занимает всё свободное пространство */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .card {
+          flex: 0 0 85vw;
+          scroll-snap-align: center;
+          height: 50vh;
         }
 
-        .card .formula .katex-display {
-            margin: 0.5em 0;
-            overflow-x: auto;
-            overflow-y: hidden;
+        .card:last-child {
+          margin-right: 20px;
         }
-        .card .desc { 
-            font-size: 14px; color: #555; line-height: 1.4; 
-            /* --- МАГИЯ: этот отступ займет всё свободное пространство и прижмет блок к низу --- */
-            margin-top: auto; 
-            border-top: 1px dashed var(--border); padding-top: 10px;
-        }
-        .empty { text-align: center; color: #95a5a6; grid-column: 1 / -1; padding: 40px; font-size: 18px; }
-
-        /* ========================================== */
-        /* МОБИЛЬНАЯ ВЕРСИЯ СО СВАЙПОМ (Scroll Snap)  */
-        /* ========================================== */
-        @media (max-width: 768px) {
-            body { padding: 15px; }
-            .controls { flex-direction: column; gap: 10px; margin-bottom: 20px; }
-            .controls input, .controls select { width: 100%; }
-            .controls input, .controls select {
-                width: 100%;
-                min-width: unset; /* Убираем min-width: 200px */
-                box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
-            }
-            .grid { 
-                display: flex; 
-                overflow-x: auto; 
-                scroll-snap-type: x mandatory; 
-                -webkit-overflow-scrolling: touch; 
-                gap: 16px;
-                padding: 10px 5px 30px 5px; 
-                margin: 0 -5px; 
-                scrollbar-width: none; 
-                align-items: stretch; /* Гарантирует одинаковую высоту карточек при свайпе */
-            }
-            .grid::-webkit-scrollbar { 
-                display: none; 
-            }
-            
-            .card { 
-                flex: 0 0 85vw; 
-                scroll-snap-align: center; 
-                height: 40vh;
-            }
-            
-            .card:last-child {
-                margin-right: 20px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <h1>Справочник формул по физике</h1>
-    <p class="subtitle">Все темы школьного курса (на основе сборника Дорофейчик В.В., Жилко В.Н.)</p>
+    <p class="subtitle">Все формулы школьного курса<br>(под редакцией Мухина Е.В.)</p>
 
     <div class="controls">
-        <input type="text" id="search" placeholder="Поиск по названию или описанию...">
-        <select id="section">
-            <option value="all">Все разделы (36 тестов)</option>
-        </select>
+      <input
+        type="text"
+        id="search"
+        placeholder="Поиск по названию или описанию..."
+      />
+      <select id="section">
+        <option value="all">Все разделы</option>
+      </select>
     </div>
 
     <div class="grid" id="grid"></div>
 
     <script>
-        const formulas = [
-            // ТЕСТ 1
-            { title: "Скорость равномерного движения", section: "Кинематика", formula: `$$v = \\frac{\\Delta r}{\\Delta t}$$`, desc: "Отношение перемещения ко времени." },
-            { title: "Кинематический закон равномерного движения", section: "Кинематика", formula: `$$x = x_0 + v_x t$$`, desc: "Координата тела при движении вдоль оси Ox." },
-            { title: "Закон сложения скоростей Галилея", section: "Кинематика", formula: `$$\\vec{v} = \\vec{v}_0 + \\vec{v}_1$$`, desc: "Скорость относительно неподвижной СО." },
-            { title: "Средняя скорость пути", section: "Кинематика", formula: `$$v_{ср} = \\frac{s}{\\Delta t}$$`, desc: "Отношение общего пути ко всему времени." },
-            // ТЕСТ 2
-            { title: "Ускорение", section: "Кинематика", formula: `$$\\vec{a} = \\frac{\\vec{v} - \\vec{v}_0}{\\Delta t}$$`, desc: "Отношение изменения скорости ко времени." },
-            { title: "Мгновенная скорость", section: "Кинематика", formula: `$$\\vec{v} = \\vec{v}_0 + \\vec{a}t$$`, desc: "Зависимость скорости от времени." },
-            { title: "Перемещение (через время)", section: "Кинематика", formula: `$$\\Delta \\vec{r} = \\vec{v}_0 t + \\frac{\\vec{a}t^2}{2}$$`, desc: "Формула перемещения." },
-            { title: "Перемещение (без времени)", section: "Кинематика", formula: `$$\\Delta r_x = \\frac{v_x^2 - v_{0x}^2}{2a_x}$$`, desc: "Связь скорости, ускорения и перемещения." },
-            { title: "Перемещение (без ускорения)", section: "Кинематика", formula: `$$\\Delta r_x = \\frac{v_{0x} + v_x}{2}t$$`, desc: "Связь скорости, ускорения и перемещения." },
-            { title: "Кинематический закон", section: "Кинематика", formula: `$$x = x_0 + v_{0x}t + \\frac{a_x t^2}{2}$$`, desc: "Уравнение координаты." },
-            // ТЕСТ 3
-            { title: "Перемещение при свободном падении", section: "Кинематика", formula: `$$\\Delta \\vec{r} = \\vec{v}_0 t + \\frac{\\vec{g}t^2}{2}$$`, desc: "Кинематика свободного падения." },
-            { title: "Скорость при свободном падении", section: "Кинематика", formula: `$$\\vec{v} = \\vec{v}_0 + \\vec{g}t$$`, desc: "Кинематика свободного падения." },
-            { title: "Бросок под углом к горизонту", section: "Кинематика", formula: `$$t_{п} = \\frac{2v_0 \\sin\\alpha}{g}$$`, desc: "Время полета." },
-            { title: "Бросок под углом к горизонту", section: "Кинематика", formula: `$$h_{max} = \\frac{v_0^2 \\sin^2\\alpha}{2g}$$`, desc: "Максимальная высота." },
-            { title: "Бросок под углом к горизонту", section: "Кинематика", formula: `$$L = \\frac{v_0^2 \\sin 2\\alpha}{g}$$`, desc: "Дальность полета." },
-            // ТЕСТ 4
-            { title: "Период", section: "Кинематика", formula: `$$T = \\frac{t}{N} = \\frac{1}{\\nu}$$`, desc: "Период. Связь периода и частоты." },
-            { title: "Частота", section: "Кинематика", formula: `$$\\nu = \\frac{N}{t} = \\frac{1}{T}$$`, desc: "Частота. Связь периода и частоты." },
-            { title: "Угловая скорость и период", section: "Кинематика", formula: `$$\\omega = \\frac{\\Delta \\varphi}{\\Delta t} = \\frac{2\\pi}{T} = 2\\pi\\nu$$`, desc: "Связь угловой скорости, периода и частоты." },
-            { title: "Линейная скорость", section: "Кинематика", formula: `$$v = \\frac{2\\pi R}{T} = 2\\pi\\nu R = \\omega R$$`, desc: "Связь линейной и угловой скоростей." },
-            { title: "Центростремительное ускорение", section: "Кинематика", formula: `$$a = \\frac{v^2}{R} = \\omega^2 R = \\omega v$$`, desc: "Ускорение при равномерном движении по окружности." },
-            // ТЕСТ 5
-            { title: "Равнодействующая сила", section: "Динамика", formula: `$$\\vec{F} = \\vec{F}_1 + \\vec{F}_2 + ... + \\vec{F}_n$$`, desc: "Геометрическая сумма всех сил." },
-            { title: "Второй закон Ньютона", section: "Динамика", formula: `$$\\vec{a} = \\frac{\\vec{F}}{m}$$`, desc: "Ускорение пропорционально силе и обратно пропорционально массе." },
-            { title: "Третий закон Ньютона", section: "Динамика", formula: `$$\\vec{F}_1 = -\\vec{F}_2$$`, desc: "Силы действия и противодействия." },
-            { title: "Закон всемирного тяготения", section: "Динамика", formula: `$$F = G\\frac{m_1 m_2}{r^2}$$`, desc: "Сила гравитационного притяжения." },
-            // ТЕСТ 6
-            { title: "Сила трения покоя (максимальная)", section: "Динамика", formula: `$$F_{тр.п. max} = \\mu_{п} N$$`, desc: "Зависит от коэффициента трения покоя и реакции опоры." },
-            { title: "Сила трения скольжения", section: "Динамика", formula: `$$F_{тр} = \\mu N$$`, desc: "Прямо пропорциональна силе нормального давления." },
-            // ТЕСТ 7
-            { title: "Закон Гука", section: "Динамика", formula: `$$F_{упр} = k \\Delta l$$`, desc: "Сила упругости пропорциональна абсолютному удлинению." },
-            { title: "Абсолютное удлинение", section: "Динамика", formula: `$$\\Delta l = l - l_0$$`, desc: "Разность деформированной и начальной длины." },
-            // ТЕСТ 8
-            { title: "Центростремительная сила", section: "Динамика", formula: `$$F_{ц} = m\\frac{v^2}{R} = m\\omega^2 R$$`, desc: "Равнодействующая сил, обеспечивающая движение по окружности." },
-            // ТЕСТ 9
-            { title: "Импульс тела", section: "Законы сохранения", formula: `$$\\vec{p} = m\\vec{v}$$`, desc: "Произведение массы на скорость." },
-            { title: "Импульс силы (2-й закон Ньютона в импульсной форме)", section: "Законы сохранения", formula: `$$\\Delta \\vec{p} = \\vec{F}\\Delta t$$`, desc: "Изменение импульса равно импульсу силы." },
-            { title: "Закон сохранения импульса", section: "Законы сохранения", formula: `$$\\vec{p}_1 + \\vec{p}_2 + ... + \\vec{p}_n = const$$`, desc: "В замкнутой системе." },
-            // ТЕСТ 10
-            { title: "Механическая работа", section: "Законы сохранения", formula: `$$A = F \\Delta r \\cos\\alpha$$`, desc: "Произведение силы, перемещения и косинуса угла между ними." },
-            { title: "Мощность (средняя и мгновенная)", section: "Законы сохранения", formula: `$$P = \\frac{A}{\\Delta t} = Fv \\cos\\alpha$$`, desc: "Скорость выполнения работы." },
-            // ТЕСТ 11
-            { title: "Кинетическая энергия", section: "Законы сохранения", formula: `$$E_k = \\frac{mv^2}{2}$$`, desc: "Энергия движения тела." },
-            { title: "Теорема об изменении кинетической энергии", section: "Законы сохранения", formula: `$$A = \\Delta E_k$$`, desc: "Работа равнодействующей сил равна изменению кинетической энергии." },
-            { title: "Потенциальная энергия тяготения", section: "Законы сохранения", formula: `$$E_n = mgh$$`, desc: "Энергия взаимодействия тел и упруго деформированных тел." },
-            { title: "Потенциальная энергия упругости", section: "Законы сохранения", formula: `$$E_n = \\frac{k \\Delta l^2}{2}$$`, desc: "Энергия взаимодействия тел и упруго деформированных тел." },
-            // ТЕСТ 12
-            { title: "Полная механическая энергия", section: "Законы сохранения", formula: `$$E = E_k + E_n$$`, desc: "Сумма кинетической и потенциальной энергий." },
-            { title: "Закон сохранения энергии", section: "Законы сохранения", formula: `$$E_k + E_n = const$$`, desc: "В замкнутой системе при действии только потенциальных сил." },
-            { title: "Теплота при неупругих столкновениях", section: "Законы сохранения", formula: `$$Q = -\\Delta E_{мех}$$`, desc: "Переход механической энергии в тепловую." },
-            // ТЕСТ 13
-            { title: "Давление", section: "Статика", formula: `$$p = \\frac{F}{S}$$`, desc: "Давление твердого тела." },
-            { title: "Гидростатическое давление", section: "Статика", formula: `$$p = \\rho g h$$`, desc: "Давление столба жидкости." },
-            { title: "Сила Архимеда", section: "Статика", formula: `$$F_A = \\rho_{ж} g V_{п}$$`, desc: "Выталкивающая сила в жидкости или газе." },
-            { title: "Условия равновесия твердого тела", section: "Статика", formula: `$$\\sum \\vec{F} = 0, \\quad \\sum M = 0$$`, desc: "Равенство нулю суммы сил и моментов сил." },
-            { title: "Момент силы", section: "Статика", formula: `$$M = F \\cdot d$$`, desc: "Произведение силы на ее плечо." },
-            // ТЕСТ 14
-            { title: "Количество вещества", section: "Основы МКТ", formula: `$$\\nu = \\frac{N}{N_A} = \\frac{m}{M}$$`, desc: "Количество вещества." },
-            { title: "Молярная масса", section: "Основы МКТ", formula: `$$M = m_0 N_A$$`, desc: "Молярная масса." },
-            { title: "Основное уравнение МКТ", section: "Основы МКТ", formula: `$$p = \\frac{1}{3} n m_0 \\overline{v^2} = \\frac{2}{3} n \\overline{E_k}$$`, desc: "Давление идеального газа." },
-            { title: "Основное уравнение МКТ", section: "Основы МКТ", formula: `$$p = nkT$$`, desc: "Давление идеального газа через абсолютную температуру." },
-            { title: "Абсолютная температура", section: "Основы МКТ", formula: `$$\\Delta t = \\Delta T, \\quad T = t + 273$$`, desc: "Связь температуры в Кельвинах и Цельсиях." },
-            { title: "Средняя кинетическая энергия молекул", section: "Основы МКТ", formula: `$$\\overline{E_k} = \\frac{3}{2} k T$$`, desc: "Связь энергии с абсолютной температурой." },
-            { title: "Средняя квадратичная скорость", section: "Основы МКТ", formula: `$$\\overline{v^2} = \\frac{3kT}{m_0}$$`, desc: "Квадрат средней квадратичной скорости." },
-            // ТЕСТ 15
-            { title: "Уравнение Клапейрона - Менделеева", section: "Основы МКТ", formula: `$$pV = \\frac{m}{M} RT$$`, desc: "Уравнение состояния идеального газа." },
-            { title: "Уравнение Клапейрона", section: "Основы МКТ", formula: `$$\\frac{pV}{T} = const \\quad (\\nu=const)$$`, desc: "Уравнение Клапейрона." },
-            { title: "Закон Дальтона", section: "Основы МКТ", formula: `$$p = p_1 + p_2 + ... + p_n$$`, desc: "Давление смеси газов равно сумме парциальных давлений." },
-            // ТЕСТ 16
-            { title: "Изопроцессы в идеальном газе", section: "Основы МКТ", formula: `$$pV = const \\quad (T=const)$$`, desc: "Бойля-Мариотта" },
-            { title: "Изопроцессы в идеальном газе", section: "Основы МКТ", formula: `$$\\frac{V}{T} = const \\quad (p=const)$$`, desc: "Гей-Люссака" },
-            { title: "Изопроцессы в идеальном газе", section: "Основы МКТ", formula: `$$\\frac{p}{T} = const \\quad (V=const)$$`, desc: "Шарля" },
-            // ТЕСТ 17
-            { title: "Поверхностное натяжение", section: "Основы МКТ", formula: `$$\\sigma = \\frac{A}{\\Delta S} = \\frac{F}{l}$$`, desc: "Коэффициент поверхностного натяжения." },
-            { title: "Подъем жидкости в капилляре", section: "Основы МКТ", formula: `$$h = \\frac{2\\sigma}{\\rho g r}$$`, desc: "Высота подъема при полном смачивании." },
-            { title: "Относительная влажность воздуха", section: "Основы МКТ", formula: `$$\\varphi = \\frac{p}{p_н} \\cdot 100\\% = \\frac{\\rho}{\\rho_н} \\cdot 100\\%$$`, desc: "Отношение парциального давления к давлению насыщенного пара." },
-            // ТЕСТ 18
-            { title: "Внутренняя энергия идеального газа", section: "Термодинамика", formula: `$$U = \\frac{3}{2} \\frac{m}{M} RT$$`, desc: "Для одноатомного идеального газа." },
-            { title: "Работа газа", section: "Термодинамика", formula: `$$A = p \\Delta V$$`, desc: "При изобарном процессе." },
-            { title: "Работа газа", section: "Термодинамика", formula: `$$A = \\nu R \\Delta T$$`, desc: "При изобарном процессе." },
-            { title: "Первый закон термодинамики", section: "Термодинамика", formula: `$$Q = \\Delta U + A$$`, desc: "Теплота идет на изменение внутренней энергии и совершение работы." },
-            { title: "Первый закон термодинамики", section: "Термодинамика", formula: `$$Q = \\frac{5}{2}p \\Delta V = \\frac {5}{2}\\nu R \\Delta T$$`, desc: "Первый закон термодинамики для идеального одноатомного газа при изобарном процессе." },
-            { title: "Первый закон термодинамики", section: "Термодинамика", formula: `$$Q = \\frac{3}{2}V \\Delta p = \\frac {3}{2}\\nu R \\Delta T$$`, desc: "Первый закон термодинамики для идеального одноатомного газа при изохорном процессе." },
-            { title: "Первый закон термодинамики", section: "Термодинамика", formula: `$$Q = A$$`, desc: "Первый закон термодинамики при изотермическом процессе." },
-            { title: "Первый закон термодинамики", section: "Термодинамика", formula: `$$Q = \\Delta U$$`, desc: "Первый закон термодинамики при изохорном процессе." },
-            { title: "Первый закон термодинамики", section: "Термодинамика", formula: `$$Q = p \\Delta V + \\Delta U$$`, desc: "Первый закон термодинамики при изобарном процессе." },
-            // ТЕСТ 19
-            { title: "Количество теплоты при нагревании", section: "Термодинамика", formula: `$$Q = cm\\Delta t$$`, desc: "Количество теплоты необходимое для нагревания тела." },
-            { title: "Количество теплоты фазовые переходы", section: "Термодинамика", formula: `$$Q = \\lambda m$$`, desc: "Количество теплоты для плавления тела." },
-            { title: "Количество теплоты фазовые переходы", section: "Термодинамика", formula: `$$Q = Lm$$`, desc: "Количество теплоты при парообразовании." },
-            { title: "Количество теплоты фазовые переходы", section: "Термодинамика", formula: `$$Q = qm$$`, desc: "Количество теплоты при сгорании топлива." },
-            { title: "Уравнение теплового баланса", section: "Термодинамика", formula: `$$Q_1 + Q_2 + ... + Q_n = 0$$`, desc: "В замкнутой системе." },
-            // ТЕСТ 20
-            { title: "Работа цикла и КПД", section: "Термодинамика", formula: `$$A = Q_1 - |Q_2|, \\newline \\eta = \\frac{A}{Q_1} \\cdot 100\\%$$`, desc: "Работа теплового двигателя и его термический КПД." },
-            { title: "КПД цикла Карно", section: "Термодинамика", formula: `$$\\eta_K = \\frac{T_1 - T_2}{T_1} \\cdot 100\\%$$`, desc: "Максимальный КПД для температур нагревателя $T_1$ и холодильника $T_2$." },
-            // ТЕСТ 21
-            { title: "Закон Кулона", section: "Электростатика", formula: `$$F = k \\frac{|q_1 q_2|}{r^2} = \\frac{1}{4\\pi\\varepsilon_0} \\frac{|q_1 q_2|}{r^2}$$`, desc: "Сила взаимодействия точечных зарядов в вакууме." },
-            { title: "Закон Кулона в среде", section: "Электростатика", formula: `$$F = \\frac{1}{4\\pi\\varepsilon_0\\varepsilon} \\frac{|q_1 q_2|}{r^2}$$`, desc: "В однородном диэлектрике с проницаемостью $\\varepsilon$." },
-            // ТЕСТ 22
-            { title: "Напряженность электростатического поля", section: "Электростатика", formula: `$$\\vec{E} = \\frac{\\vec{F}}{q}$$`, desc: "Напряженность электростатического поля." },
-            { title: "Напряженность электростатического поля", section: "Электростатика", formula: `$$E = k \\frac{|q|}{r^2}$$`, desc: "Напряженность поля созданного точечным зарядом." },
-            { title: "Принцип суперпозиции полей", section: "Электростатика", formula: `$$\\vec{E} = \\vec{E}_1 + \\vec{E}_2 + ... + \\vec{E}_n$$`, desc: "Геометрическая сумма напряженностей." },
-            // ТЕСТ 23
-            { title: "Потенциал и напряжение", section: "Электростатика", formula: `$$\\varphi = \\frac{W}{q_0}, \\quad U = \\varphi_1 - \\varphi_2$$`, desc: "Энергетическая характеристика поля и разность потенциалов." },
-            { title: "Работа поля", section: "Электростатика", formula: `$$A = q(\\varphi_1 - \\varphi_2) = qU$$`, desc: "Работа электростатического поля." },
-            { title: "Работа поля", section: "Электростатика", formula: `$$A = qEd$$`, desc: "Для однородного электростатического поля." },
-            { title: "Связь напряжения с напряженностью", section: "Электростатика", formula: `$$E = \\frac{U}{d}$$`, desc: "Для однородного поля." },
-            // ТЕСТ 24
-            { title: "Электроемкость и емкость плоского конденсатора", section: "Электростатика", formula: `$$C = \\frac{q}{U}, \\quad C = \\frac{\\varepsilon_0 \\varepsilon S}{d}$$`, desc: "Основные формулы емкости." },
-            { title: "Соединение конденсаторов", section: "Электростатика", formula: `$$\\frac{1}{C} = \\sum \\frac{1}{C_i} \\quad (посл.)$$`, desc: "Последовательное  соединения." },
-            { title: "Соединение конденсаторов", section: "Электростатика", formula: `$$C = \\sum C_i \\quad (парал.)$$`, desc: "Параллельное соединения." },
-            { title: "Энергия конденсатора", section: "Электростатика", formula: `$$W = \\frac{CU^2}{2} = \\frac{q^2}{2C} = \\frac{qU}{2}$$`, desc: "Энергия электрического поля конденсатора." },
-            // ТЕСТ 25
-            { title: "Закон Ома для участка цепи", section: "Постоянный ток", formula: `$$I = \\frac{U}{R}$$`, desc: "Связь тока, напряжения и сопротивления." },
-            { title: "Электрическое сопротивление проводника", section: "Постоянный ток", formula: `$$R = \\rho \\frac{l}{S}$$`, desc: "Сопротивление проводника." },
-            { title: "Соединение проводников", section: "Постоянный ток", formula: `$$R = \\sum R_i \\quad (посл.)$$`, desc: "Последовательное  соединения проводников." },
-            { title: "Соединение проводников", section: "Постоянный ток", formula: `$$\\frac{1}{R} = \\sum \\frac{1}{R_i} \\quad (парал.)$$`, desc: "Параллельное соединения проводников." },
-            // ТЕСТ 26
-            { title: "Закон Ома для полной цепи", section: "Постоянный ток", formula: `$$I = \\frac{\\mathcal{E}}{R + r}$$`, desc: "Ток в цепи с источником ЭДС." },
-            { title: "Ток короткого замыкания", section: "Постоянный ток", formula: `$$I_{к.з} = \\frac{\\mathcal{E}}{r}$$`, desc: "Максимальный ток при $R \\to 0$." },
-            // ТЕСТ 27
-            { title: "Работа тока", section: "Постоянный ток", formula: `$$A = qU = IU\\Delta t$$`, desc: "Работа тока." },
-            { title: "Работа источника тока", section: "Постоянный ток", formula: `$$A = q\\mathcal{E} = I \\mathcal{E}\\Delta t$$`, desc: "Работа источника тока." },
-            { title: "Мощность тока", section: "Постоянный ток", formula: `$$P = IU = I^2R = \\frac{U^2}{R}$$`, desc: "Мощность тока." },
-            { title: "Мощность источника тока", section: "Постоянный ток", formula: `$$P = I\\mathcal{E} = \\frac{\\mathcal{E}^2}{R + r} = I^2(R + r)$$`, desc: "Полная мощность в электрической цепи." },
-            { title: "Закон Джоуля-Ленца", section: "Постоянный ток", formula: `$$Q = I^2R\\Delta t$$`, desc: "Тепловое действие тока." },
-            { title: "КПД источника тока", section: "Постоянный ток", formula: `$$\\eta = \\frac{R}{R + r} \\cdot 100\\%$$`, desc: "Отношение полезной мощности к полной." },
-            // ТЕСТ 28
-            { title: "Сила Ампера", section: "Магнитное поле", formula: `$$F_A = IBl \\sin\\alpha$$`, desc: "Сила действия магнитного поля на проводник с током." },
-            { title: "Сила Лоренца", section: "Магнитное поле", formula: `$$F_L = qvB \\sin\\alpha$$`, desc: "Сила действия магнитного поля на движущийся заряд." },
-            // ТЕСТ 29
-            { title: "Магнитный поток", section: "Магнитное поле", formula: `$$\\Phi = BS \\cos\\alpha$$`, desc: "Магнитный поток." },
-            { title: "Магнитный поток", section: "Магнитное поле", formula: `$$\\Phi = LI$$`, desc: "Магнитный поток катушки с током." },
-            { title: "ЭДС индукции", section: "Магнитное поле", formula: `$$\\mathcal{E}_{инд} = -\\frac{\\Delta\\Phi}{\\Delta t}$$`, desc: "Закон Фарадея." },
-            { title: "ЭДС в движущемся проводнике", section: "Магнитное поле", formula: `$$\\mathcal{E} = Blv \\sin\\alpha$$`, desc: "ЭДС в движущемся проводнике." },
-            { title: "ЭДС самоиндукции", section: "Магнитное поле", formula: `$$\\mathcal{E}_c = -L\\frac{\\Delta I}{\\Delta t}$$`, desc: "Явление самоиндукции." },
-            { title: "Энергия магнитного поля", section: "Магнитное поле", formula: `$$W_m = \\frac{LI^2}{2}$$`, desc: "Энергия катушки с током." },
-            // ТЕСТ 30
-            { title: "Уравнение гармонических колебаний", section: "Колебания и волны", formula: `$$x = x_{max} \\cos(\\omega t + \\varphi_0) \\newline x = x_{max} \\sin(\\omega t + \\varphi_0)$$`, desc: "Кинематический закон колебаний." },
-            { title: "Период математического маятника", section: "Колебания и волны", formula: `$$T = 2\\pi\\sqrt{\\frac{l}{g}}$$`, desc: "Период колебаний математического маятника." },
-            { title: "Период пружинного маятника", section: "Колебания и волны", formula: `$$T = 2\\pi\\sqrt{\\frac{m}{k}}$$`, desc: "Период колебаний пружинного маятника." },
-            { title: "Длина волны", section: "Колебания и волны", formula: `$$\\lambda = vT$$`, desc: "Расстояние, на которое распространяется волна за период." },
-            // ТЕСТ 31
-            { title: "Колебательный контур (Формула Томсона)", section: "Колебания и волны", formula: `$$T = 2\\pi\\sqrt{LC}$$`, desc: "Период электромагнитных колебаний." },
-            { title: "Действующие значения силы тока и напряжения", section: "Колебания и волны", formula: `$$I_{д} = \\frac{I_0}{\\sqrt{2}}, \\quad U_{д} = \\frac{U_0}{\\sqrt{2}}$$`, desc: "Параметры переменного тока." },
-            { title: "Трансформатор", section: "Колебания и волны", formula: `$$k = \\frac{N_1}{N_2} = \\frac{U_1}{U_2}$$`, desc: " Коэффициент трансформации." },
-            { title: "Длина электромагнитной волны", section: "Колебания и волны", formula: `$$\\lambda = cT$$`, desc: "Связь длины волны со скоростью света и периодом." },
-            // ТЕСТ 32
-            { title: "Законы отражения и преломления", section: "Геометрическая оптика", formula: `$$\\alpha = \\beta, \\quad \\frac{\\sin\\alpha}{\\sin\\gamma} = \\frac{n_2}{n_1}$$`, desc: "Угол падения равен углу отражения; закон Снеллиуса." },
-            { title: "Абсолютный показатель преломления и полное отражение", section: "Геометрическая оптика", formula: `$$n = \\frac{c}{v}, \\quad \\sin\\alpha_0 = \\frac{n_2}{n_1}$$`, desc: "Скорость света в среде и предельный угол полного отражения." },
-            // ТЕСТ 33
-            { title: "Формула тонкой линзы", section: "Геометрическая оптика", formula: `$$\\pm \\frac{1}{F} = \\pm \\frac{1}{d} \\pm \\frac{1}{f}$$`, desc: "Связь фокусного расстояния с растояниями до предмета и изображения." },
-            { title: "Линейное (поперечное) увеличение", section: "Геометрическая оптика", formula: `$$\\Gamma = \\frac{H}{h} = \\frac{f}{d}$$`, desc: "Линейное увеличение через размер изображения и предмета или расстояния." },
-            { title: "Оптическая сила", section: "Геометрическая оптика", formula: `$$D = \\frac{1}{F}$$`, desc: "Измеряется в диоптриях (дптр)." },
-            // Тест 34
-            { title: "Интерференция", section: "Волновая оптика", formula: `$$\\delta = m\\lambda,\\newline \\quad \\delta = \\frac{(2m + 1)}{2}\\lambda$$`, desc: "Условие максимума и минимума для оптической разности хода." },
-            { title: "Дифракционная решетка", section: "Волновая оптика", formula: `$$d \\sin\\theta = m\\lambda$$`, desc: "Условие главных максимумов." },
-            // ТЕСТ 35
-            { title: "Релятивистская кинематика и динамика", section: "СТО. Фотоэффект", formula: `$$l = l_0 \\sqrt{1 - \\frac{v^2}{c^2}}$$`, desc: "Сокращение длины." },
-            { title: "Релятивистская кинематика и динамика", section: "СТО. Фотоэффект", formula: `$$\\tau = \\frac{\\tau_0}{\\sqrt{1 - \\frac{v^2}{c^2}}}$$`, desc: "Замедление времени." },
-            { title: "Релятивистская кинематика и динамика", section: "СТО. Фотоэффект", formula: `$$E = \\frac{m_0 c^2}{\\sqrt{1 - \\frac{v^2}{c^2}}}$$`, desc: "Полная энергия." },
-            { title: "Релятивистская кинематика и динамика", section: "СТО. Фотоэффект", formula: `$$E = m c^2$$`, desc: "Энергия покоя." },
-            { title: "Квантовая физика.", section: "СТО. Фотоэффект", formula: `$$E = h \\nu = \\frac{hc}{\\lambda}$$`, desc: "Энергия фотона." },
-            { title: "Фотоэффект (Уравнение Эйнштейна)", section: "СТО. Фотоэффект", formula: `$$h\\nu = A_{вых} + E_{k max}$$`, desc: "Энергия фотона идет на работу выхода и кинетическую энергию." },
-            { title: "Фотоэффект (Уравнение Эйнштейна)", section: "СТО. Фотоэффект", formula: `$$E_{k max} = eU_з$$`, desc: "Максимальная кинетическая энергия фотоэлектронов." },
-            { title: "Красная граница фотоэффекта", section: "СТО. Фотоэффект", formula: `$$\\nu_{min} = \\frac{A_{вых}}{h}$$`, desc: "Минимальная частота, при которой еще возможен фотоэффект." },
-            // ТЕСТ 36
-            { title: "Постулаты Бора и энергия атома водорода", section: "Атомная и ядерная", formula: `$$h\\nu = E_k - E_m, \\quad E_n = \\frac{E_1}{n^2}$$`, desc: "Правило частот и уровни энергии." },
-            { title: "Энергия связи ядра", section: "Атомная и ядерная", formula: `$$E_{св} = \\Delta m c^2$$`, desc: "Энергия, необходимая для расщепления ядра." },
-            { title: "Дефект массы", section: "Атомная и ядерная", formula: `$$E_{св} = [Zm_p + Nm_n - m_{я}] \\cdot 931.5 \\text{ МэВ}$$`, desc: "Энергия связи в мегаэлектрон вольтах." },
-            { title: "Закон радиоактивного распада", section: "Атомная и ядерная", formula: `$$N = N_0 2^{-\\frac{t}{T}}$$`, desc: "Уменьшение числа нераспавшихся ядер со временем." }
-        ];
+        // Уведомление
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        z-index: 9999;
+        animation: fadeInOut 2s ease-in-out;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2000);
+}
 
-        const searchInput = document.getElementById('search');
-        const sectionSelect = document.getElementById('section');
-        const grid = document.getElementById('grid');
+// Анимация для уведомления
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+        15%, 85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    }
+`;
+document.head.appendChild(style);
 
-        const uniqueSections = [...new Set(formulas.map(f => f.section))];
-        uniqueSections.forEach(s => {
-            const opt = document.createElement('option');
-            opt.value = s; opt.textContent = s;
-            sectionSelect.appendChild(opt);
-        });
+// Блокировка сохранения страницы
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        showToast('Сохранение страницы запрещено');
+    }
+    if (e.ctrlKey && e.key.toLowerCase() === 'p') {
+        e.preventDefault();
+        showToast('Печать запрещена');
+    }
+    if (e.ctrlKey && e.key.toLowerCase() === 'a') {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            showToast('Выделение запрещено');
+        }
+    }
+});
 
-        function render() {
-            const query = searchInput.value.toLowerCase();
-            const selectedSection = sectionSelect.value;
-            
-            const filtered = formulas.filter(f => {
-                const matchSection = selectedSection === 'all' || f.section === selectedSection;
-                const matchSearch = f.title.toLowerCase().includes(query) || f.desc.toLowerCase().includes(query) || f.section.toLowerCase().includes(query);
-                return matchSection && matchSearch;
-            });
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    showToast('Сохранение страницы запрещено');
+});
 
-            grid.innerHTML = filtered.length ? '' : '<div class="empty">Ничего не найдено</div>';
+window.addEventListener('beforeunload', (e) => {
+    document.body.innerHTML = '';
+});
 
-            filtered.forEach(f => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
+const formulas = [
+  {
+    "title": "Скорость равномерного движения",
+    "section": "Кинематика",
+    "formula": "$$\\vec{v} = \\frac{\\Delta \\vec{r}}{\\Delta t}$$",
+    "desc": "<b>Отношение перемещения ко времени</b><br><strong>𝒗</strong> — скорость,<br><strong>Δr</strong> — перемещение,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Кинематический закон равномерного движения",
+    "section": "Кинематика",
+    "formula": "$$x = x_0 + v_x t$$",
+    "desc": "<b>Координата тела при движении вдоль оси Ox</b><br><strong>x</strong> — координата,<br><strong>x₀</strong> — начальная координата,<br><strong>𝒗ₓ</strong> — проекция скорости,<br><strong>t</strong> — время."
+  },
+  {
+    "title": "Закон сложения скоростей Галилея",
+    "section": "Кинематика",
+    "formula": "$$\\vec{v} = \\vec{v}_0 + \\vec{v}_1$$",
+    "desc": "<b>Скорость относительно неподвижной СО</b><br><strong>𝒗</strong> — скорость относительно неподвижной СО,<br><strong>𝒗₀</strong> — скорость относительно подвижной СО,<br><strong>𝒗₁</strong> — скорость подвижной СО."
+  },
+  {
+    "title": "Средняя скорость пути",
+    "section": "Кинематика",
+    "formula": "$$v_{ср} = \\frac{s}{\\Delta t}$$",
+    "desc": "<b>Отношение общего пути ко всему времени</b><br><strong>𝒗_ср</strong> — средняя скорость,<br><strong>s</strong> — путь,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Ускорение",
+    "section": "Кинематика",
+    "formula": "$$\\vec{a} = \\frac{\\vec{v} - \\vec{v}_0}{\\Delta t}$$",
+    "desc": "<b>Отношение изменения скорости ко времени</b><br><strong>a</strong> — ускорение,<br><strong>𝒗</strong> — скорость,<br><strong>𝒗₀</strong> — начальная скорость,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Мгновенная скорость",
+    "section": "Кинематика",
+    "formula": "$$\\vec{v} = \\vec{v}_0 + \\vec{a}t$$",
+    "desc": "<b>Зависимость скорости от времени</b><br><strong>𝒗</strong> — вектор скорости,<br><strong>𝒗₀</strong> — вектор начальной скорости,<br><strong>a</strong> — вектор ускорения,<br><strong>t</strong> — время."
+  },
+  {
+    "title": "Перемещение при равноускоренном движении",
+    "section": "Кинематика",
+    "formula": "$$\\Delta \\vec{r} = \\vec{v}_0 t + \\frac{\\vec{a}t^2}{2}$$",
+    "desc": "<b>Перемещение (через время)</b><br><strong>Δr</strong> — перемещение,<br><strong>𝒗₀</strong> — начальная скорость,<br><strong>t</strong> — время,<br><strong>a</strong> — ускорение."
+  },
+  {
+    "title": "Перемещение при равноускоренном движении",
+    "section": "Кинематика",
+    "formula": "$$\\Delta r_x = \\frac{v_x^2 - v_{0x}^2}{2a_x}$$",
+    "desc": "<b>Перемещение (без времени)</b><br><strong>Δrₓ</strong> — перемещение,<br><strong>𝒗ₓ</strong> — скорость,<br><strong>𝒗₀ₓ</strong> — начальная скорость,<br><strong>aₓ</strong> — ускорение."
+  },
+  {
+    "title": "Перемещение при равноускоренном движении",
+    "section": "Кинематика",
+    "formula": "$$\\Delta r_x = \\frac{v_{0x} + v_x}{2}t$$",
+    "desc": "<b>Перемещение (без ускорения)</b><br><strong>Δrₓ</strong> — перемещение,<br><strong>𝒗₀ₓ</strong> — начальная скорость,<br><strong>𝒗ₓ</strong> — скорость,<br><strong>t</strong> — время."
+  },
+  {
+    "title": "Основное кинематическое уравнение равноускоренного движения",
+    "section": "Кинематика",
+    "formula": "$$x = x_0 + v_{0x}t + \\frac{a_x t^2}{2}$$",
+    "desc": "<b>Кинематический закон</b><br><strong>x</strong> — координата,<br><strong>x₀</strong> — начальная координата,<br><strong>𝒗₀ₓ</strong> — начальная скорость,<br><strong>t</strong> — время,<br><strong>aₓ</strong> — ускорение."
+  },
+  {
+    "title": "Кинематика свободного падения",
+    "section": "Кинематика",
+    "formula": "$$\\Delta \\vec{r} = \\vec{v}_0 t + \\frac{\\vec{g}t^2}{2}$$",
+    "desc": "<b>Перемещение при свободном падении</b><br><strong>Δr</strong> — перемещение,<br><strong>𝒗₀</strong> — начальная скорость,<br><strong>t</strong> — время,<br><strong>g</strong> — ускорение свободного падения."
+  },
+  {
+    "title": "Перемещение при свободном падении",
+    "section": "Кинематика",
+    "formula": "$$\\vec{v} = \\vec{v}_0 + \\vec{g}t$$",
+    "desc": "<b>Скорость при свободном падении</b><br><strong>𝒗</strong> — вектор скорости,<br><strong>𝒗₀</strong> — вектор начальной скорости,<br><strong>g</strong> — вектор ускорения свободного падения,<br><strong>t</strong> — время."
+  },
+  {
+    "title": "Бросок под углом к горизонту",
+    "section": "Кинематика",
+    "formula": "$$t_{п} = \\frac{2v_0 \\sin\\alpha}{g}$$",
+    "desc": "<b>Время полета</b><br><strong>t_п</strong> — время полета,<br><strong>𝒗₀</strong> — начальная скорость,<br><strong>α</strong> — угол броска,<br><strong>g</strong> — ускорение свободного падения."
+  },
+  {
+    "title": "Бросок под углом к горизонту",
+    "section": "Кинематика",
+    "formula": "$$h_{max} = \\frac{v_0^2 \\sin^2\\alpha}{2g}$$",
+    "desc": "<b>Максимальная высота</b><br><strong>h_max</strong> — максимальная высота,<br><strong>𝒗₀</strong> — начальная скорость,<br><strong>α</strong> — угол броска,<br><strong>g</strong> — ускорение свободного падения."
+  },
+  {
+    "title": "Бросок под углом к горизонту",
+    "section": "Кинематика",
+    "formula": "$$L = \\frac{v_0^2 \\sin 2\\alpha}{g}$$",
+    "desc": "<b>Дальность полета</b><br><strong>L</strong> — дальность полета,<br><strong>𝒗₀</strong> — начальная скорость,<br><strong>α</strong> — угол броска,<br><strong>g</strong> — ускорение свободного падения."
+  },
+  {
+    "title": "Период",
+    "section": "Кинематика",
+    "formula": "$$T = \\frac{t}{N}$$",
+    "desc": "<b>Период движения по окружности</b><br><strong>T</strong> — период,<br><strong>t</strong> — время,<br><strong>N</strong> — число оборотов."
+  },
+  {
+    "title": "Период",
+    "section": "Кинематика",
+    "formula": "$$T = \\frac{1}{\\nu}$$",
+    "desc": "<b>Период. Связь периода и частоты</b><br><strong>T</strong> — период,<br><strong>ν</strong> — частота."
+  },
+  {
+    "title": "Частота",
+    "section": "Кинематика",
+    "formula": "$$\\nu = \\frac{N}{t}$$",
+    "desc": "<b>Частота движения по окружности</b><br><strong>ν</strong> — частота,<br><strong>N</strong> — число оборотов,<br><strong>t</strong> — время."
+  },
+  {
+    "title": "Частота",
+    "section": "Кинематика",
+    "formula": "$$\\nu = \\frac{1}{T}$$",
+    "desc": "<b>Частота. Связь периода и частоты</b><br><strong>ν</strong> — частота,<br><strong>T</strong> — период."
+  },
+  {
+    "title": "Угловая скорость и период",
+    "section": "Кинематика",
+    "formula": "$$\\omega = \\frac{\\Delta \\varphi}{\\Delta t}$$",
+    "desc": "<b>Угловая скорость движения по окружности</b><br><strong>ω</strong> — угловая скорость,<br><strong>Δφ</strong> — угол поворота,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Угловая скорость и период",
+    "section": "Кинематика",
+    "formula": "$$\\omega = \\frac{2\\pi}{T}$$",
+    "desc": "<b>Связь угловой скорости и периода</b><br><strong>ω</strong> — угловая скорость,<br><strong>T</strong> — период."
+  },
+  {
+    "title": "Угловая скорость и период",
+    "section": "Кинематика",
+    "formula": "$$\\omega = 2\\pi\\nu$$",
+    "desc": "<b>Связь угловой скорости и частоты</b><br><strong>ω</strong> — угловая скорость,<br><strong>ν</strong> — частота."
+  },
+  {
+    "title": "Линейная скорость",
+    "section": "Кинематика",
+    "formula": "$$v = \\frac{2\\pi R}{T}$$",
+    "desc": "<b>Линейная скорость движения по окружности</b><br><strong>𝒗</strong> — линейная скорость,<br><strong>R</strong> — радиус,<br><strong>T</strong> — период."
+  },
+  {
+    "title": "Линейная скорость",
+    "section": "Кинематика",
+    "formula": "$$v = 2\\pi\\nu R$$",
+    "desc": "<b>Линейная скорость движения по окружности</b><br><strong>𝒗</strong> — линейная скорость,<br><strong>ν</strong> — частота,<br><strong>R</strong> — радиус."
+  },
+  {
+    "title": "Линейная скорость",
+    "section": "Кинематика",
+    "formula": "$$v = \\omega R$$",
+    "desc": "<b>Связь линейной и угловой скоростей</b><br><strong>𝒗</strong> — линейная скорость,<br><strong>ω</strong> — угловая скорость,<br><strong>R</strong> — радиус."
+  },
+  {
+    "title": "Центростремительное ускорение",
+    "section": "Кинематика",
+    "formula": "$$a = \\frac{v^2}{R}$$",
+    "desc": "<b>Ускорение через линейную скорость</b><br><strong>a</strong> — центростремительное ускорение,<br><strong>𝒗</strong> — линейная скорость,<br><strong>R</strong> — радиус."
+  },
+  {
+    "title": "Центростремительное ускорение",
+    "section": "Кинематика",
+    "formula": "$$a = \\omega^2 R$$",
+    "desc": "<b>Ускорение через угловую скорость</b><br><strong>a</strong> — центростремительное ускорение,<br><strong>ω</strong> — угловая скорость,<br><strong>R</strong> — радиус."
+  },
+  {
+    "title": "Центростремительное ускорение",
+    "section": "Кинематика",
+    "formula": "$$a = \\omega v$$",
+    "desc": "<b>Ускорение через скорости</b><br><strong>a</strong> — центростремительное ускорение,<br><strong>ω</strong> — угловая скорость,<br><strong>𝒗</strong> — линейная скорость."
+  },
+  {
+    "title": "Равнодействующая сила",
+    "section": "Динамика",
+    "formula": "$$\\vec{F} = \\vec{F}_1 + \\vec{F}_2 + ... + \\vec{F}_n$$",
+    "desc": "<b>Векторная сумма всех сил</b><br><strong>F</strong> — вектор равнодействующей силы,<br><strong>Fᵢ</strong> — векторы отдельных сил."
+  },
+  {
+    "title": "Второй закон Ньютона",
+    "section": "Динамика",
+    "formula": "$$\\vec{a} = \\frac{\\vec{F}}{m}$$",
+    "desc": "<b>Ускорение тела в результате действия силы</b><br><strong>a</strong> — ускорение,<br><strong>F</strong> — равнодействующая силы,<br><strong>m</strong> — масса."
+  },
+  {
+    "title": "Третий закон Ньютона",
+    "section": "Динамика",
+    "formula": "$$\\vec{F}_1 = -\\vec{F}_2$$",
+    "desc": "<b>Силы действия и противодействия</b><br><strong>F₁</strong>, <strong>F₂</strong> — векторы сил действия и противодействия."
+  },
+  {
+    "title": "Закон всемирного тяготения",
+    "section": "Динамика",
+    "formula": "$$F = G\\frac{m_1 m_2}{r^2}$$",
+    "desc": "<b>Сила гравитационного притяжения</b><br><strong>F</strong> — сила гравитационного притяжения,<br><strong>G</strong> — гравитационная постоянная,<br><strong>m₁</strong>, <strong>m₂</strong> — масса тел,<br><strong>r</strong> — расстояние."
+  },
+//   {
+//     "title": "Сила трения покоя (максимальная)",
+//     "section": "Динамика",
+//     "formula": "$$F_{тр.п. max} = \\mu_{п} N$$",
+//     "desc": "Зависит от коэффициента трения покоя и реакции опоры.<br><strong>F_тр.п. max</strong> — максимальная сила трения покоя,<br><strong>μ_п</strong> — коэффициент трения покоя,<br><strong>N</strong> — сила нормальной реакции опоры."
+//   },
+  {
+    "title": "Сила трения скольжения",
+    "section": "Динамика",
+    "formula": "$$F_{тр} = \\mu N$$",
+    "desc": "<b>Прямо пропорциональна силе нормального давления</b><br><strong>F_тр</strong> — сила трения скольжения,<br><strong>μ</strong> — коэффициент трения скольжения,<br><strong>N</strong> — сила нормальной реакции опоры."
+  },
+  {
+    "title": "Закон Гука",
+    "section": "Динамика",
+    "formula": "$$F_{упр} = k \\Delta l$$",
+    "desc": "<b>Сила упругости пропорциональна абсолютному удлинению</b><br><strong>F_упр</strong> — сила упругости,<br><strong>k</strong> — жесткость,<br><strong>Δl</strong> — абсолютное удлинение."
+  },
+  {
+    "title": "Абсолютное удлинение",
+    "section": "Динамика",
+    "formula": "$$\\Delta l = l - l_0$$",
+    "desc": "<b>Разность деформированной и начальной длины</b><br><strong>Δl</strong> — абсолютное удлинение,<br><strong>l</strong> — конечная длина,<br><strong>l₀</strong> — начальная длина."
+  },
+  {
+    "title": "Центростремительная сила",
+    "section": "Динамика",
+    "formula": "$$F_{ц} = m\\frac{v^2}{R}$$",
+    "desc": "<b>Равнодействующая сил, обеспечивающая движение по окружности</b><br><strong>F_ц</strong> — центростремительная сила,<br><strong>m</strong> — масса,<br><strong>𝒗</strong> — скорость,<br><strong>R</strong> — радиус."
+  },
+  {
+    "title": "Центростремительная сила",
+    "section": "Динамика",
+    "formula": "$$F_{ц} = m\\omega^2 R$$",
+    "desc": "<b>Равнодействующая сил, обеспечивающая движение по окружности</b><br><strong>F_ц</strong> — центростремительная сила,<br><strong>m</strong> — масса,<br><strong>ω</strong> — угловая скорость,<br><strong>R</strong> — радиус."
+  },
+  {
+    "title": "Импульс тела",
+    "section": "Законы сохранения",
+    "formula": "$$\\vec{p} = m\\vec{v}$$",
+    "desc": "<b>Произведение массы на скорость</b><br><strong>p</strong> — импульс,<br><strong>m</strong> — масса,<br><strong>𝒗</strong> — скорость."
+  },
+  {
+    "title": "Импульс силы (2-й закон Ньютона в импульсной форме)",
+    "section": "Законы сохранения",
+    "formula": "$$\\Delta \\vec{p} = \\vec{F}\\Delta t$$",
+    "desc": "<b>Изменение импульса тела равно импульсу силы</b><br><strong>Δp</strong> — изменение импульса,<br><strong>F</strong> — сила,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Закон сохранения импульса",
+    "section": "Законы сохранения",
+    "formula": "$$\\vec{p}_1 + \\vec{p}_2 + ... + \\vec{p}_n = const$$",
+    "desc": "<b>В замкнутой системе</b><br><strong>pᵢ</strong> — импульс тел системы"
+  },
+  {
+    "title": "Механическая работа",
+    "section": "Законы сохранения",
+    "formula": "$$A = F \\Delta r \\cos\\alpha$$",
+    "desc": "<b>Произведение силы, перемещения и косинуса угла между ними</b><br><strong>A</strong> — механическая работа,<br><strong>F</strong> — сила,<br><strong>Δr</strong> — перемещение,<br><strong>α</strong> — угол между силой и перемещением."
+  },
+  {
+    "title": "Мощность (средняя)",
+    "section": "Законы сохранения",
+    "formula": "$$P = \\frac{A}{\\Delta t}$$",
+    "desc": "<b>Скорость выполнения работы</b><br><strong>P</strong> — мощность,<br><strong>A</strong> — работа,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Мощность (мгновенная)",
+    "section": "Законы сохранения",
+    "formula": "$$P = Fv \\cos\\alpha$$",
+    "desc": "<b>Мощность силы</b><br><strong>P</strong> — мощность,<br><strong>F</strong> — сила,<br><strong>𝒗</strong> — скорость,<br><strong>α</strong> — угол между силой и скоростью."
+  },
+  {
+    "title": "Кинетическая энергия",
+    "section": "Законы сохранения",
+    "formula": "$$E_k = \\frac{mv^2}{2}$$",
+    "desc": "<b>Энергия движения тела</b><br><strong>E_k</strong> — кинетическая энергия,<br><strong>m</strong> — масса,<br><strong>𝒗</strong> — скорость."
+  },
+  {
+    "title": "Теорема об изменении кинетической энергии",
+    "section": "Законы сохранения",
+    "formula": "$$A = \\Delta E_k$$",
+    "desc": "<b>Работа равнодействующей сил равна изменению кинетической энергии</b><br><strong>A</strong> — работа равнодействующей сил,<br><strong>ΔE_k</strong> — изменение кинетической энергии."
+  },
+  {
+    "title": "Потенциальная энергия тяготения",
+    "section": "Законы сохранения",
+    "formula": "$$E_n = mgh$$",
+    "desc": "<b>Энергия взаимодействия тел и упруго деформированных тел</b><br><strong>E_n</strong> — потенциальная энергия,<br><strong>m</strong> — масса,<br><strong>g</strong> — ускорение свободного падения,<br><strong>h</strong> — высота."
+  },
+  {
+    "title": "Потенциальная энергия упругости",
+    "section": "Законы сохранения",
+    "formula": "$$E_n = \\frac{k \\Delta l^2}{2}$$",
+    "desc": "<b>Энергия взаимодействия тел и упруго деформированных тел</b><br><strong>E_n</strong> — потенциальная энергия упругости,<br><strong>k</strong> — жесткость,<br><strong>Δl</strong> — абсолютное удлинение."
+  },
+  {
+    "title": "Полная механическая энергия",
+    "section": "Законы сохранения",
+    "formula": "$$E = E_k + E_n$$",
+    "desc": "<b>Сумма кинетической и потенциальной энергий</b><br><strong>E</strong> — полная механическая энергия,<br><strong>E_k</strong> — кинетическая энергия,<br><strong>E_n</strong> — потенциальная энергия."
+  },
+  {
+    "title": "Закон сохранения энергии",
+    "section": "Законы сохранения",
+    "formula": "$$E_k + E_n = const$$",
+    "desc": "<b>В замкнутой системе при действии только потенциальных сил</b><br><strong>E_k</strong> — кинетическая энергия,<br><strong>E_n</strong> — потенциальная энергия."
+  },
+  {
+    "title": "Теплота при неупругих столкновениях",
+    "section": "Законы сохранения",
+    "formula": "$$Q = -\\Delta E_{мех}$$",
+    "desc": "<b>Переход механической энергии в тепловую</b><br><strong>Q</strong> — количество теплоты,<br><strong>ΔE_мех</strong> — изменение механической энергии."
+  },
+  {
+    "title": "Давление",
+    "section": "Статика",
+    "formula": "$$p = \\frac{F}{S}$$",
+    "desc": "<b>Давление твердого тела</b><br><strong>p</strong> — давление,<br><strong>F</strong> — сила,<br><strong>S</strong> — площадь."
+  },
+  {
+    "title": "Гидростатическое давление",
+    "section": "Статика",
+    "formula": "$$p = \\rho g h$$",
+    "desc": "<b>Давление столба жидкости</b><br><strong>p</strong> — гидростатическое давление,<br><strong>ρ</strong> — плотность жидкости,<br><strong>g</strong> — ускорение свободного падения,<br><strong>h</strong> — высота столба."
+  },
+  {
+    "title": "Сила Архимеда",
+    "section": "Статика",
+    "formula": "$$F_A = \\rho_{ж} g V_{п}$$",
+    "desc": "<b>Выталкивающая сила в жидкости или газе</b><br><strong>F_A</strong> — сила Архимеда,<br><strong>ρ_ж</strong> — плотность жидкости,<br><strong>g</strong> — ускорение свободного падения,<br><strong>V_п</strong> — объем погруженной части."
+  },
+  {
+    "title": "Условия равновесия твердого тела",
+    "section": "Статика",
+    "formula": "$$\\sum \\vec{F} = 0 \\quad \\sum M = 0$$",
+    "desc": "<b>Равенство нулю суммы сил и моментов сил</b><br><strong>ΣF</strong> — векторная сумма всех сил<br><strong>ΣM</strong> — алгебраическая сумма моментов сил."
+  },
+  {
+    "title": "Момент силы",
+    "section": "Статика",
+    "formula": "$$M = F \\cdot d$$",
+    "desc": "<b>Произведение силы на ее плечо</b><br><strong>M</strong> — момент силы,<br><strong>F</strong> — сила,<br><strong>d</strong> — плечо силы."
+  },
+  {
+    "title": "Количество вещества",
+    "section": "Основы МКТ",
+    "formula": "$$\\nu = \\frac{N}{N_A}$$",
+    "desc": "<b>Количество вещества через количество частиц</b><br><strong>ν</strong> — количество вещества,<br><strong>N</strong> — число частиц,<br><strong>N_A</strong> — постоянная Авогадро."
+  },
+  {
+    "title": "Количество вещества",
+    "section": "Основы МКТ",
+    "formula": "$$\\nu = \\frac{m}{M}$$",
+    "desc": "<b>Количество вещества через массу вещества</b><br><strong>ν</strong> — количество вещества,<br><strong>m</strong> — масса,<br><strong>M</strong> — молярная масса."
+  },
+  {
+    "title": "Молярная масса",
+    "section": "Основы МКТ",
+    "formula": "$$M = m_0 N_A$$",
+    "desc": "<b>Масса одной частицы умноженная на количество частиц в одном моле</b><br><strong>M</strong> — молярная масса,<br><strong>m₀</strong> — масса одной молекулы,<br><strong>N_A</strong> — постоянная Авогадро."
+  },
+  {
+    "title": "Основное уравнение МКТ",
+    "section": "Основы МКТ",
+    "formula": "$$p = \\frac{1}{3} n m_0 \\overline{v^2}$$",
+    "desc": "<b>Давление идеального газа</b><br><strong>p</strong> — давление,<br><strong>n</strong> — концентрация молекул,<br><strong>m₀</strong> — масса молекулы,<br><strong>𝒗²_ср</strong> — средний квадрат скорости."
+  },
+  {
+    "title": "Основное уравнение МКТ",
+    "section": "Основы МКТ",
+    "formula": "$$p = \\frac{2}{3} n \\overline{E_k}$$",
+    "desc": "<b>Давление идеального газа</b><br><strong>p</strong> — давление,<br><strong>n</strong> — концентрация молекул,<br><strong>E_k_ср</strong> — средняя кинетическая энергия молекул."
+  },
+  {
+    "title": "Основное уравнение МКТ",
+    "section": "Основы МКТ",
+    "formula": "$$p = nkT$$",
+    "desc": "<b>Давление идеального газа через абсолютную температуру</b><br><strong>p</strong> — давление,<br><strong>n</strong> — концентрация молекул,<br><strong>k</strong> — постоянная Больцмана,<br><strong>T</strong> — абсолютная температура."
+  },
+  {
+    "title": "Абсолютная шкала температур",
+    "section": "Основы МКТ",
+    "formula": "$$\\Delta t = \\Delta T \\quad T = t + 273$$",
+    "desc": "<b>Связь температуры в Кельвинах и Цельсиях</b><br><strong>Δt</strong> — изменение температуры по Цельсию,<br><strong>ΔT</strong> — изменение абсолютной температуры<br><strong>T</strong> — абсолютная температура,<br><strong>t</strong> — температура по Цельсию."
+  },
+  {
+    "title": "Средняя кинетическая энергия молекул",
+    "section": "Основы МКТ",
+    "formula": "$$\\overline{E_k} = \\frac{3}{2} k T$$",
+    "desc": "<b>Связь энергии с абсолютной температурой</b><br><strong>E_k_ср</strong> — средняя кинетическая энергия молекул,<br><strong>k</strong> — постоянная Больцмана,<br><strong>T</strong> — абсолютная температура."
+  },
+  {
+    "title": "Средняя квадратичная скорость",
+    "section": "Основы МКТ",
+    "formula": "$$\\overline{v^2} = \\frac{3kT}{m_0}$$",
+    "desc": "<b>Квадрат средней квадратичной скорости</b><br><strong>𝒗²_ср</strong> — средний квадрат скорости,<br><strong>k</strong> — постоянная Больцмана,<br><strong>T</strong> — абсолютная температура,<br><strong>m₀</strong> — масса молекулы."
+  },
+  {
+    "title": "Уравнение Клапейрона - Менделеева",
+    "section": "Основы МКТ",
+    "formula": "$$pV = \\frac{m}{M} RT$$",
+    "desc": "<b>Уравнение состояния идеального газа</b><br><strong>p</strong> — давление,<br><strong>V</strong> — объем,<br><strong>m</strong> — масса,<br><strong>M</strong> — молярная масса,<br><strong>R</strong> — универсальная газовая постоянная,<br><strong>T</strong> — абсолютная температура."
+  },
+  {
+    "title": "Уравнение Клапейрона",
+    "section": "Основы МКТ",
+    "formula": "$$\\frac{pV}{T} = const \\quad (\\nu=const)$$",
+    "desc": "<b>Уравнение Клапейрона</b><br><strong>p</strong> — давление,<br><strong>V</strong> — объем,<br><strong>T</strong> — абсолютная температура,<br><strong>ν</strong> — количество вещества."
+  },
+  {
+    "title": "Закон Дальтона",
+    "section": "Основы МКТ",
+    "formula": "$$p = p_1 + p_2 + ... + p_n$$",
+    "desc": "<b>Давление смеси газов равно сумме парциальных давлений</b><br><strong>p</strong> — общее давление смеси,<br><strong>pᵢ</strong> — парциальные давления газов."
+  },
+  {
+    "title": "Изопроцессы в идеальном газе",
+    "section": "Основы МКТ",
+    "formula": "$$pV = const \\quad (T=const)$$",
+    "desc": "<b>Изотермический. Бойля-Мариотта</b><br><strong>p</strong> — давление,<br><strong>V</strong> — объем,<br><strong>T</strong> — абсолютная температура (постоянна)."
+  },
+  {
+    "title": "Изопроцессы в идеальном газе",
+    "section": "Основы МКТ",
+    "formula": "$$\\frac{V}{T} = const \\quad (p=const)$$",
+    "desc": "<b>Изобарный. Гей-Люссака</b><br><strong>V</strong> — объем,<br><strong>T</strong> — абсолютная температура,<br><strong>p</strong> — давление (постоянно)."
+  },
+  {
+    "title": "Изопроцессы в идеальном газе",
+    "section": "Основы МКТ",
+    "formula": "$$\\frac{p}{T} = const \\quad (V=const)$$",
+    "desc": "<b>Изохорный. Шарля</b><br><strong>p</strong> — давление,<br><strong>T</strong> — абсолютная температура,<br><strong>V</strong> — объем (постоянен)."
+  },
+  {
+    "title": "Поверхностное натяжение",
+    "section": "Основы МКТ",
+    "formula": "$$\\sigma = \\frac{A}{\\Delta S}$$",
+    "desc": "<b>Коэффициент поверхностного натяжения</b><br><strong>σ</strong> — коэффициент поверхностного натяжения,<br><strong>A</strong> — работа,<br><strong>ΔS</strong> — изменение площади поверхности."
+  },
+  {
+    "title": "Поверхностное натяжение",
+    "section": "Основы МКТ",
+    "formula": "$$\\sigma = \\frac{F}{l}$$",
+    "desc": "<b>Коэффициент поверхностного натяжения</b><br><strong>σ</strong> — коэффициент поверхностного натяжения,<br><strong>F</strong> — сила,<br><strong>l</strong> — длина контура."
+  },
+  {
+    "title": "Подъем жидкости в капилляре",
+    "section": "Основы МКТ",
+    "formula": "$$h = \\frac{2\\sigma}{\\rho g r}$$",
+    "desc": "<b>Высота подъема при полном смачивании</b><br><strong>h</strong> — высота подъема,<br><strong>σ</strong> — коэффициент поверхностного натяжения,<br><strong>ρ</strong> — плотность жидкости,<br><strong>g</strong> — ускорение свободного падения,<br><strong>r</strong> — радиус капилляра."
+  },
+  {
+    "title": "Относительная влажность воздуха",
+    "section": "Основы МКТ",
+    "formula": "$$\\varphi = \\frac{p}{p_н} \\cdot 100\\%$$",
+    "desc": "<b>Отношение парциального давления к давлению насыщенного пара</b><br><strong>φ</strong> — относительная влажность,<br><strong>p</strong> — парциальное давление,<br><strong>p_н</strong> — давление насыщенного пара."
+  },
+  {
+    "title": "Относительная влажность воздуха",
+    "section": "Основы МКТ",
+    "formula": "$$\\varphi = \\frac{\\rho}{\\rho_н} \\cdot 100\\%$$",
+    "desc": "<b>Отношение плотности пара к плотности насыщенного пара</b><br><strong>φ</strong> — относительная влажность,<br><strong>ρ</strong> — плотность пара,<br><strong>ρ_н</strong> — плотность насыщенного пара."
+  },
+  {
+    "title": "Внутренняя энергия идеального газа",
+    "section": "Термодинамика",
+    "formula": "$$U = \\frac{3}{2} \\frac{m}{M} RT$$",
+    "desc": "<b>Для одноатомного идеального газа</b><br><strong>U</strong> — внутренняя энергия,<br><strong>m</strong> — масса,<br><strong>M</strong> — молярная масса,<br><strong>R</strong> — универсальная газовая постоянная,<br><strong>T</strong> — абсолютная температура."
+  },
+  {
+    "title": "Работа газа",
+    "section": "Термодинамика",
+    "formula": "$$A = p \\Delta V$$",
+    "desc": "<b>При изобарном процессе</b><br><strong>A</strong> — работа газа,<br><strong>p</strong> — давление,<br><strong>ΔV</strong> — изменение объема."
+  },
+  {
+    "title": "Работа газа",
+    "section": "Термодинамика",
+    "formula": "$$A = \\nu R \\Delta T$$",
+    "desc": "<b>При изобарном процессе</b><br><strong>A</strong> — работа газа,<br><strong>ν</strong> — количество вещества,<br><strong>R</strong> — универсальная газовая постоянная,<br><strong>ΔT</strong> — изменение температуры."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = \\Delta U + A$$",
+    "desc": "<b>Теплота идет на изменение внутренней энергии и совершение работы</b><br><strong>Q</strong> — количество теплоты,<br><strong>ΔU</strong> — изменение внутренней энергии,<br><strong>A</strong> — работа газа."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = \\frac{5}{2}p \\Delta V$$",
+    "desc": "<b>Первый закон термодинамики для идеального одноатомного газа при изобарном процессе</b><br><strong>Q</strong> — количество теплоты,<br><strong>p</strong> — давление,<br><strong>ΔV</strong> — изменение объема (для одноатомного газа при изобарном процессе)."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = \\frac {5}{2}\\nu R \\Delta T$$",
+    "desc": "<b>Первый закон термодинамики для идеального одноатомного газа при изобарном процессе</b><br><strong>Q</strong> — работа газа,<br><strong>ν</strong> — количество вещества,<br><strong>R</strong> — универсальная газовая постоянная,<br><strong>ΔT</strong> — изменение температуры."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = \\frac{3}{2}V \\Delta p$$",
+    "desc": "<b>Первый закон термодинамики для идеального одноатомного газа при изохорном процессе</b><br><strong>Q</strong> — количество теплоты,<br><strong>V</strong> — объем,<br><strong>Δp</strong> — изменение давления (для одноатомного газа при изохорном процессе)."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = \\frac {3}{2}\\nu R \\Delta T$$",
+    "desc": "<b>Первый закон термодинамики для идеального одноатомного газа при изохорном процессе.</b><br><strong>Q</strong> — работа газа,<br><strong>ν</strong> — количество вещества,<br><strong>R</strong> — универсальная газовая постоянная,<br><strong>ΔT</strong> — изменение температуры."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = A$$",
+    "desc": "<b>Первый закон термодинамики при изотермическом процессе</b><br><strong>Q</strong> — количество теплоты,<br><strong>A</strong> — работа газа (при изотермическом процессе)."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = \\Delta U$$",
+    "desc": "<b>Первый закон термодинамики при изохорном процессе</b><br><strong>Q</strong> — количество теплоты,<br><strong>ΔU</strong> — изменение внутренней энергии (при изохорном процессе)."
+  },
+  {
+    "title": "Первый закон термодинамики",
+    "section": "Термодинамика",
+    "formula": "$$Q = p \\Delta V + \\Delta U$$",
+    "desc": "<b>Первый закон термодинамики при изобарном процессе</b><br><strong>Q</strong> — количество теплоты,<br><strong>p</strong> — давление,<br><strong>ΔV</strong> — изменение объема,<br><strong>ΔU</strong> — изменение внутренней энергии."
+  },
+  {
+    "title": "Количество теплоты при нагревании",
+    "section": "Термодинамика",
+    "formula": "$$Q = cm\\Delta t$$",
+    "desc": "<b>Количество теплоты необходимое для нагревания тела</b><br><strong>Q</strong> — количество теплоты,<br><strong>c</strong> — удельная теплоемкость,<br><strong>m</strong> — масса,<br><strong>Δt</strong> — изменение температуры."
+  },
+  {
+    "title": "Количество теплоты фазовые переходы",
+    "section": "Термодинамика",
+    "formula": "$$Q = \\lambda m$$",
+    "desc": "<b>Количество теплоты для плавления тела</b><br><strong>Q</strong> — количество теплоты,<br><strong>λ</strong> — удельная теплота плавления,<br><strong>m</strong> — масса."
+  },
+  {
+    "title": "Количество теплоты фазовые переходы",
+    "section": "Термодинамика",
+    "formula": "$$Q = Lm$$",
+    "desc": "<b>Количество теплоты при парообразовании</b><br><strong>Q</strong> — количество теплоты,<br><strong>L</strong> — удельная теплота парообразования,<br><strong>m</strong> — масса."
+  },
+  {
+    "title": "Количество теплоты фазовые переходы",
+    "section": "Термодинамика",
+    "formula": "$$Q = qm$$",
+    "desc": "<b>Количество теплоты при сгорании топлива</b><br><strong>Q</strong> — количество теплоты,<br><strong>q</strong> — удельная теплота сгорания,<br><strong>m</strong> — масса."
+  },
+  {
+    "title": "Уравнение теплового баланса",
+    "section": "Термодинамика",
+    "formula": "$$Q_1 + Q_2 + ... + Q_n = 0$$",
+    "desc": "<b>В замкнутой системе</b><br><strong>Qᵢ</strong> — количества теплоты, полученные или отданные телами в замкнутой системе."
+  },
+  {
+    "title": "Работа цикла и КПД",
+    "section": "Термодинамика",
+    "formula": "$$A = Q_1 - |Q_2|$$",
+    "desc": "Работа теплового двигателя и его термический КПД.<br><strong>A</strong> — работа цикла,<br><strong>Q₁</strong> — теплота, полученная от нагревателя,<br><strong>Q₂</strong> — теплота, отданная холодильнику."
+  },
+  {
+    "title": "Работа цикла и КПД",
+    "section": "Термодинамика",
+    "formula": "$$\\eta = \\frac{A}{Q_1} \\cdot 100\\%$$",
+    "desc": "<b>Работа теплового двигателя и его термический КПД</b><br><strong>η</strong> — КПД теплового двигателя,<br><strong>A</strong> — работа цикла,<br><strong>Q₁</strong> — теплота от нагревателя."
+  },
+  {
+    "title": "КПД цикла Карно",
+    "section": "Термодинамика",
+    "formula": "$$\\eta_K = \\frac{T_1 - T_2}{T_1} \\cdot 100\\%$$",
+    "desc": "<b>Максимальный КПД для температур нагревателя и холодильника</b><br><strong>η_K</strong> — КПД цикла Карно,<br><strong>T₁</strong> — температура нагревателя,<br><strong>T₂</strong> — температура холодильника."
+  },
+  {
+    "title": "Закон Кулона",
+    "section": "Электростатика",
+    "formula": "$$F = k \\frac{|q_1 q_2|}{r^2}$$",
+    "desc": "<b>Сила взаимодействия точечных зарядов в вакууме</b><br><strong>F</strong> — сила Кулона,<br><strong>k</strong> — коэффициент пропорциональности,<br><strong>q₁</strong>, <strong>q₂</strong> — заряд,<br><strong>r</strong> — расстояние между зарядами."
+  },
+  {
+    "title": "Закон Кулона",
+    "section": "Электростатика",
+    "formula": "$$F = \\frac{1}{4\\pi\\varepsilon_0} \\frac{|q_1 q_2|}{r^2}$$",
+    "desc": "<b>Сила взаимодействия точечных зарядов в вакууме</b><br><strong>F</strong> — сила Кулона,<br><strong>ε₀</strong> — электрическая постоянная,<br><strong>q₁</strong>, <strong>q₂</strong> — заряд,<br><strong>r</strong> — расстояние между зарядами."
+  },
+  {
+    "title": "Закон Кулона в среде",
+    "section": "Электростатика",
+    "formula": "$$F = \\frac{1}{4\\pi\\varepsilon_0\\varepsilon} \\frac{|q_1 q_2|}{r^2}$$",
+    "desc": "<b>В однородном диэлектрике с проницаемостью ε.</b><br><strong>F</strong> — сила Кулона в среде,<br><strong>ε₀</strong> — электрическая постоянная,<br><strong>ε</strong> — диэлектрическая проницаемость,<br><strong>q₁</strong>, <strong>q₂</strong> — заряд,<br><strong>r</strong> — расстояние между зарядами."
+  },
+  {
+    "title": "Напряженность электростатического поля",
+    "section": "Электростатика",
+    "formula": "$$\\vec{E} = \\frac{\\vec{F}}{q}$$",
+    "desc": "<b>Напряженность электростатического поля</b><br><strong>E</strong> — напряженность поля,<br><strong>F</strong> — сила, действующая на пробный заряд,<br><strong>q</strong> — величина пробного заряда."
+  },
+  {
+    "title": "Напряженность электростатического поля",
+    "section": "Электростатика",
+    "formula": "$$E = k \\frac{|q|}{r^2}$$",
+    "desc": "<b>Напряженность поля созданного точечным зарядом</b><br><strong>E</strong> — напряженность поля точечного заряда,<br><strong>k</strong> — коэффициент пропорциональности,<br><strong>q</strong> — заряд,<br><strong>r</strong> — расстояние."
+  },
+  {
+    "title": "Принцип суперпозиции полей",
+    "section": "Электростатика",
+    "formula": "$$\\vec{E} = \\vec{E}_1 + \\vec{E}_2 + ... + \\vec{E}_n$$",
+    "desc": "<b>Векторная сумма напряженностей</b><br><strong>E</strong> — результирующая напряженность,<br><strong>Eᵢ</strong> — напряженности полей отдельных зарядов."
+  },
+  {
+    "title": "Потенциал и напряжение",
+    "section": "Электростатика",
+    "formula": "$$\\varphi = \\frac{W}{q_0}$$",
+    "desc": "<b>Энергетическая характеристика поля и разность потенциалов</b><br><strong>φ</strong> — потенциал поля,<br><strong>W</strong> — потенциальная энергия пробного заряда,<br><strong>q₀</strong> — величина пробного заряда."
+  },
+  {
+    "title": "Потенциал и напряжение",
+    "section": "Электростатика",
+    "formula": "$$U = \\varphi_1 - \\varphi_2$$",
+    "desc": "<b>Энергетическая характеристика поля и разность потенциалов</b><br><strong>U</strong> — напряжение (разность потенциалов),<br><strong>φ₁</strong>, <strong>φ₂</strong> — потенциалы точек."
+  },
+  {
+    "title": "Работа поля",
+    "section": "Электростатика",
+    "formula": "$$A = q(\\varphi_1 - \\varphi_2)$$",
+    "desc": "<b>Работа электростатического поля</b><br><strong>A</strong> — работа поля,<br><strong>q</strong> — заряд,<br><strong>φ₁</strong>, <strong>φ₂</strong> — потенциалы начальной и конечной точек."
+  },
+  {
+    "title": "Работа поля",
+    "section": "Электростатика",
+    "formula": "$$A = qU$$",
+    "desc": "<b>Работа электростатического поля</b><br><strong>A</strong> — работа поля,<br><strong>q</strong> — заряд,<br><strong>U</strong> — напряжение."
+  },
+  {
+    "title": "Работа поля",
+    "section": "Электростатика",
+    "formula": "$$A = qEd$$",
+    "desc": "<b>Для однородного электростатического поля</b><br><strong>A</strong> — работа поля в однородном поле,<br><strong>q</strong> — заряд,<br><strong>E</strong> — напряженность,<br><strong>d</strong> — перемещение вдоль силовой линии."
+  },
+  {
+    "title": "Связь напряжения с напряженностью",
+    "section": "Электростатика",
+    "formula": "$$E = \\frac{U}{d}$$",
+    "desc": "<b>Для однородного поля</b><br><strong>E</strong> — напряженность однородного поля,<br><strong>U</strong> — напряжение,<br><strong>d</strong> — расстояние."
+  },
+  {
+    "title": "Электроемкость",
+    "section": "Электростатика",
+    "formula": "$$C = \\frac{q}{U}$$",
+    "desc": "<b>Основная формула емкости</b><br><strong>C</strong> — электроемкость,<br><strong>q</strong> — заряд,<br><strong>U</strong> — напряжение."
+  },
+  {
+    "title": "Емкость плоского конденсатора",
+    "section": "Электростатика",
+    "formula": "$$C = \\frac{\\varepsilon_0 \\varepsilon S}{d}$$",
+    "desc": "<strong>C</strong> — емкость плоского конденсатора,<br><strong>ε₀</strong> — электрическая постоянная,<br><strong>ε</strong> — диэлектрическая проницаемость,<br><strong>S</strong> — площадь пластин,<br><strong>d</strong> — расстояние между ними."
+  },
+  {
+    "title": "Соединение конденсаторов",
+    "section": "Электростатика",
+    "formula": "$$\\frac{1}{C} = \\sum \\frac{1}{C_i} $$",
+    "desc": "<b>Последовательное соединение</b><br><strong>C</strong> — общая емкость при последовательном соединении,<br><strong>Cᵢ</strong> — емкости отдельных конденсаторов."
+  },
+  {
+    "title": "Соединение конденсаторов",
+    "section": "Электростатика",
+    "formula": "$$C = \\sum C_i$$",
+    "desc": "<b>Параллельное соединение</b><br><strong>C</strong> — общая емкость при параллельном соединении,<br><strong>Cᵢ</strong> — емкости отдельных конденсаторов."
+  },
+  {
+    "title": "Энергия конденсатора",
+    "section": "Электростатика",
+    "formula": "$$W = \\frac{CU^2}{2}$$",
+    "desc": "<b>Энергия электрического поля конденсатора</b><br><strong>W</strong> — энергия конденсатора,<br><strong>C</strong> — электроемкость,<br><strong>U</strong> — напряжение."
+  },
+  {
+    "title": "Энергия конденсатора",
+    "section": "Электростатика",
+    "formula": "$$W = \\frac{q^2}{2C}$$",
+    "desc": "<b>Энергия электрического поля конденсатора</b><br><strong>W</strong> — энергия конденсатора,<br><strong>q</strong> — заряд,<br><strong>C</strong> — электроемкость."
+  },
+  {
+    "title": "Энергия конденсатора",
+    "section": "Электростатика",
+    "formula": "$$W = \\frac{qU}{2}$$",
+    "desc": "<b>Энергия электрического поля конденсатора</b><br><strong>W</strong> — энергия конденсатора,<br><strong>q</strong> — заряд,<br><strong>U</strong> — напряжение."
+  },
+  {
+    "title": "Закон Ома для участка цепи",
+    "section": "Постоянный ток",
+    "formula": "$$I = \\frac{U}{R}$$",
+    "desc": "<b>Связь тока, напряжения и сопротивления</b><br><strong>I</strong> — сила тока,<br><strong>U</strong> — напряжение,<br><strong>R</strong> — сопротивление."
+  },
+  {
+    "title": "Электрическое сопротивление проводника",
+    "section": "Постоянный ток",
+    "formula": "$$R = \\rho \\frac{l}{S}$$",
+    "desc": "<b>Сопротивление проводника</b><br><strong>R</strong> — сопротивление проводника,<br><strong>ρ</strong> — удельное сопротивление,<br><strong>l</strong> — длина,<br><strong>S</strong> — площадь поперечного сечения."
+  },
+  {
+    "title": "Соединение проводников",
+    "section": "Постоянный ток",
+    "formula": "$$R = \\sum R_i $$",
+    "desc": "<b>Последовательное соединение проводников</b><br><strong>R</strong> — общее сопротивление при последовательном соединении,<br><strong>Rᵢ</strong> — сопротивления отдельных проводников."
+  },
+  {
+    "title": "Соединение проводников",
+    "section": "Постоянный ток",
+    "formula": "$$\\frac{1}{R} = \\sum \\frac{1}{R_i}$$",
+    "desc": "<b>Параллельное соединение проводников</b><br><strong>R</strong> — общее сопротивление при параллельном соединении,<br><strong>Rᵢ</strong> — сопротивления отдельных проводников."
+  },
+  {
+    "title": "Закон Ома для полной цепи",
+    "section": "Постоянный ток",
+    "formula": "$$I = \\frac{\\mathcal{E}}{R + r}$$",
+    "desc": "<b>Ток в цепи с источником ЭДС</b><br><strong>I</strong> — сила тока в полной цепи,<br><strong>ℰ</strong> — ЭДС источника,<br><strong>R</strong> — внешнее сопротивление,<br><strong>r</strong> — внутреннее сопротивление."
+  },
+  {
+    "title": "Ток короткого замыкания",
+    "section": "Постоянный ток",
+    "formula": "$$I_{к.з} = \\frac{\\mathcal{E}}{r}$$",
+    "desc": "<b>Максимальный ток при R → 0</b><br><strong>I_к.з</strong> — ток короткого замыкания,<br><strong>ℰ</strong> — ЭДС источника,<br><strong>r</strong> — внутреннее сопротивление."
+  },
+  {
+    "title": "Работа тока",
+    "section": "Постоянный ток",
+    "formula": "$$A = qU$$",
+    "desc": "<b>Работа тока</b><br><strong>A</strong> — работа тока,<br><strong>q</strong> — заряд,<br><strong>U</strong> — напряжение."
+  },
+  {
+    "title": "Работа тока",
+    "section": "Постоянный ток",
+    "formula": "$$A = IU\\Delta t$$",
+    "desc": "<b>Работа тока</b><br><strong>A</strong> — работа тока,<br><strong>I</strong> — сила тока,<br><strong>U</strong> — напряжение,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Работа источника тока",
+    "section": "Постоянный ток",
+    "formula": "$$A = q\\mathcal{E}$$",
+    "desc": "<b>Работа источника тока</b><br><strong>A</strong> — работа источника тока,<br><strong>q</strong> — заряд,<br><strong>ℰ</strong> — ЭДС."
+  },
+  {
+    "title": "Работа источника тока",
+    "section": "Постоянный ток",
+    "formula": "$$A = I \\mathcal{E}\\Delta t$$",
+    "desc": "<b>Работа источника тока</b><br><strong>A</strong> — работа источника тока,<br><strong>I</strong> — сила тока,<br><strong>ℰ</strong> — ЭДС,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "Мощность тока",
+    "section": "Постоянный ток",
+    "formula": "$$P = IU$$",
+    "desc": "<b>Напряжение и ток</b><br><strong>P</strong> — мощность тока,<br><strong>I</strong> — сила тока,<br><strong>U</strong> — напряжение."
+  },
+  {
+    "title": "Мощность тока",
+    "section": "Постоянный ток",
+    "formula": "$$P = I^2R$$",
+    "desc": "<b>Ток и сопротивление</b><br><strong>P</strong> — мощность тока,<br><strong>I</strong> — сила тока,<br><strong>R</strong> — сопротивление."
+  },
+  {
+    "title": "Мощность тока",
+    "section": "Постоянный ток",
+    "formula": "$$P = \\frac{U^2}{R}$$",
+    "desc": "<b>Напряжение и сопротивление</b><br><strong>P</strong> — мощность тока,<br><strong>U</strong> — напряжение,<br><strong>R</strong> — сопротивление."
+  },
+  {
+    "title": "Мощность источника тока",
+    "section": "Постоянный ток",
+    "formula": "$$P = I\\mathcal{E}$$",
+    "desc": "<b>Полная мощность в электрической цепи</b><br><strong>P</strong> — полная мощность источника,<br><strong>I</strong> — сила тока,<br><strong>ℰ</strong> — ЭДС."
+  },
+  {
+    "title": "Мощность источника тока",
+    "section": "Постоянный ток",
+    "formula": "$$P = \\frac{\\mathcal{E}^2}{R + r}$$",
+    "desc": "<b>Полная мощность в электрической цепи</b><br><strong>P</strong> — полная мощность источника,<br><strong>ℰ</strong> — ЭДС,<br><strong>R</strong> — внешнее сопротивление,<br><strong>r</strong> — внутреннее сопротивление."
+  },
+  {
+    "title": "Мощность источника тока",
+    "section": "Постоянный ток",
+    "formula": "$$P = I^2(R + r)$$",
+    "desc": "<b>Полная мощность в электрической цепи</b><br><strong>P</strong> — полная мощность источника,<br><strong>I</strong> — сила тока,<br><strong>R</strong> — внешнее сопротивление,<br><strong>r</strong> — внутреннее сопротивление."
+  },
+  {
+    "title": "Закон Джоуля-Ленца",
+    "section": "Постоянный ток",
+    "formula": "$$Q = I^2R\\Delta t$$",
+    "desc": "<b>Тепловое действие тока</b><br><strong>Q</strong> — количество теплоты (закон Джоуля-Ленца),<br><strong>I</strong> — сила тока,<br><strong>R</strong> — сопротивление,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "КПД источника тока",
+    "section": "Постоянный ток",
+    "formula": "$$\\eta = \\frac{R}{R + r} \\cdot 100\\%$$",
+    "desc": "<b>Отношение полезной мощности к полной</b><br><strong>η</strong> — КПД источника тока,<br><strong>R</strong> — внешнее сопротивление,<br><strong>r</strong> — внутреннее сопротивление."
+  },
+  {
+    "title": "Сила Ампера",
+    "section": "Магнитное поле",
+    "formula": "$$F_A = IBl \\sin\\alpha$$",
+    "desc": "<b>Сила действия магнитного поля на проводник с током</b><br><strong>F_A</strong> — сила Ампера,<br><strong>I</strong> — сила тока,<br><strong>B</strong> — магнитная индукция,<br><strong>l</strong> — длина проводника,<br><strong>α</strong> — угол между током и вектором B."
+  },
+  {
+    "title": "Сила Лоренца",
+    "section": "Магнитное поле",
+    "formula": "$$F_L = qvB \\sin\\alpha$$",
+    "desc": "<b>Сила действия магнитного поля на движущийся заряд</b><br><strong>F_L</strong> — сила Лоренца,<br><strong>q</strong> — заряд,<br><strong>𝒗</strong> — скорость,<br><strong>B</strong> — магнитная индукция,<br><strong>α</strong> — угол между скоростью и вектором B."
+  },
+  {
+    "title": "Магнитный поток",
+    "section": "Магнитное поле",
+    "formula": "$$\\Phi = BS \\cos\\alpha$$",
+    "desc": "<b>Магнитный поток</b><br><strong>Φ</strong> — магнитный поток,<br><strong>B</strong> — магнитная индукция,<br><strong>S</strong> — площадь,<br><strong>α</strong> — угол между нормалью к площади и вектором B."
+  },
+  {
+    "title": "Магнитный поток",
+    "section": "Магнитное поле",
+    "formula": "$$\\Phi = LI$$",
+    "desc": "<b>Магнитный поток соленоида</b><br><strong>Φ</strong> — магнитный поток,<br><strong>L</strong> — индуктивность,<br><strong>I</strong> — сила тока."
+  },
+  {
+    "title": "ЭДС индукции",
+    "section": "Магнитное поле",
+    "formula": "$$\\mathcal{E}_{инд} = -\\frac{\\Delta\\Phi}{\\Delta t}$$",
+    "desc": "<b>Закон Фарадея</b><br><strong>ℰ_инд</strong> — ЭДС индукции,<br><strong>ΔΦ</strong> — изменение магнитного потока,<br><strong>Δt</strong> — время."
+  },
+  {
+    "title": "ЭДС в движущемся проводнике",
+    "section": "Магнитное поле",
+    "formula": "$$\\mathcal{E} = Blv \\sin\\alpha$$",
+    "desc": "<b>ЭДС в движущемся проводнике</b>br><strong>ℰ</strong> — ЭДС в движущемся проводнике,<br><strong>B</strong> — магнитная индукция,<br><strong>l</strong> — длина,<br><strong>𝒗</strong> — скорость,<br><strong>α</strong> — угол."
+  },
+  {
+    "title": "ЭДС самоиндукции",
+    "section": "Магнитное поле",
+    "formula": "$$\\mathcal{E}_c = -L\\frac{\\Delta I}{\\Delta t}$$",
+    "desc": "<b>Явление самоиндукции</b><br><strong>ℰ_c</strong> — ЭДС самоиндукции,<br><strong>L</strong> — индуктивность,<br><strong>ΔI</strong> — изменение силы тока,<br><strong>Δt</strong> — промежуток времени."
+  },
+  {
+    "title": "Энергия магнитного поля",
+    "section": "Магнитное поле",
+    "formula": "$$W_m = \\frac{LI^2}{2}$$",
+    "desc": "<b>Энергия катушки с током</b><br><strong>W_m</strong> — энергия магнитного поля,<br><strong>L</strong> — индуктивность,<br><strong>I</strong> — сила тока."
+  },
+  {
+    "title": "Уравнение гармонических колебаний",
+    "section": "Колебания и волны",
+    "formula": "$$x = x_{max} \\cos(\\omega t + \\varphi_0)$$",
+    "desc": "<b>Кинематический закон колебаний</b><br><strong>x</strong> — координата,<br><strong>x_max</strong> — амплитуда,<br><strong>ω</strong> — циклическая частота,<br><strong>t</strong> — время,<br><strong>φ₀</strong> — начальная фаза."
+  },
+  {
+    "title": "Уравнение гармонических колебаний",
+    "section": "Колебания и волны",
+    "formula": "$$x = x_{max} \\sin(\\omega t + \\varphi_0)$$",
+    "desc": "<b>Кинематический закон колебаний</b><br><strong>x</strong> — координата,<br><strong>x_max</strong> — амплитуда,<br><strong>ω</strong> — циклическая частота,<br><strong>t</strong> — время,<br><strong>φ₀</strong> — начальная фаза."
+  },
+  {
+    "title": "Период математического маятника",
+    "section": "Колебания и волны",
+    "formula": "$$T = 2\\pi\\sqrt{\\frac{l}{g}}$$",
+    "desc": "<b>Период колебаний математического маятника</b><br><strong>T</strong> — период колебаний математического маятника,<br><strong>l</strong> — длина нити,<br><strong>g</strong> — ускорение свободного падения."
+  },
+  {
+    "title": "Период пружинного маятника",
+    "section": "Колебания и волны",
+    "formula": "$$T = 2\\pi\\sqrt{\\frac{m}{k}}$$",
+    "desc": "<b>Период колебаний пружинного маятника</b><br><strong>T</strong> — период колебаний пружинного маятника,<br><strong>m</strong> — масса груза,<br><strong>k</strong> — жесткость пружины."
+  },
+  {
+    "title": "Длина волны",
+    "section": "Колебания и волны",
+    "formula": "$$\\lambda = vT$$",
+    "desc": "<b>Расстояние, на которое распространяется волна за период</b><br><strong>λ</strong> — длина волны,<br><strong>𝒗</strong> — скорость распространения волны,<br><strong>T</strong> — период."
+  },
+  {
+    "title": "Колебательный контур (Формула Томсона)",
+    "section": "Колебания и волны",
+    "formula": "$$T = 2\\pi\\sqrt{LC}$$",
+    "desc": "<b>Период электромагнитных колебаний</b><br><strong>T</strong> — период электромагнитных колебаний,<br><strong>L</strong> — индуктивность,<br><strong>C</strong> — электроемкость."
+  },
+  {
+    "title": "Действующие значения силы тока и напряжения",
+    "section": "Колебания и волны",
+    "formula": "$$I_{д} = \\frac{I_0}{\\sqrt{2}}$$",
+    "desc": "<b>Параметры переменного тока</b><br><strong>I_д</strong> — действующее значение силы тока,<br><strong>I₀</strong> — амплитудное значение силы тока."
+  },
+  {
+    "title": "Действующие значения силы тока и напряжения",
+    "section": "Колебания и волны",
+    "formula": "$$U_{д} = \\frac{U_0}{\\sqrt{2}}$$",
+    "desc": "<b>Параметры переменного тока</b><br><strong>U_д</strong> — действующее значение напряжения,<br><strong>U₀</strong> — амплитудное значение напряжения."
+  },
+  {
+    "title": "Трансформатор",
+    "section": "Колебания и волны",
+    "formula": "$$k = \\frac{N_1}{N_2}$$",
+    "desc": "<b>Коэффициент трансформации</b><br><strong>k</strong> — коэффициент трансформации,<br><strong>N₁</strong>, <strong>N₂</strong> — число витков первичной и вторичной обмоток."
+  },
+  {
+    "title": "Трансформатор",
+    "section": "Колебания и волны",
+    "formula": "$$k = \\frac{U_1}{U_2}$$",
+    "desc": "<b>Коэффициент трансформации</b><br><strong>k</strong> — коэффициент трансформации,<br><strong>U₁</strong>, <strong>U₂</strong> — напряжения на первичной и вторичной обмотках."
+  },
+  {
+    "title": "Длина электромагнитной волны",
+    "section": "Колебания и волны",
+    "formula": "$$\\lambda = cT$$",
+    "desc": "<b>Связь длины волны со скоростью света и периодом</b><br><strong>λ</strong> — длина электромагнитной волны,<br><strong>c</strong> — скорость света,<br><strong>T</strong> — период."
+  },
+  {
+    "title": "Закон отражения",
+    "section": "Геометрическая оптика",
+    "formula": "$$\\alpha = \\beta$$",
+    "desc": "<b>Угол падения равен углу отражения</b><br><strong>α</strong> — угол падения,<br><strong>β</strong> — угол отражения."
+  },
+  {
+    "title": "Закон преломления",
+    "section": "Геометрическая оптика",
+    "formula": "$$\\frac{\\sin\\alpha}{\\sin\\gamma} = \\frac{n_2}{n_1}$$",
+    "desc": "<b>Закон Снеллиуса</b><br><strong>α</strong> — угол падения,<br><strong>γ</strong> — угол преломления,<br><strong>n₁</strong>, <strong>n₂</strong> — показатели преломления сред."
+  },
+  {
+    "title": "Абсолютный показатель преломления и полное отражение",
+    "section": "Геометрическая оптика",
+    "formula": "$$n = \\frac{c}{v}$$",
+    "desc": "<b>Скорость света в среде и предельный угол полного отражения</b><br><strong>n</strong> — абсолютный показатель преломления,<br><strong>c</strong> — скорость света в вакууме,<br><strong>𝒗</strong> — скорость света в среде."
+  },
+  {
+    "title": "Абсолютный показатель преломления и полное отражение",
+    "section": "Геометрическая оптика",
+    "formula": "$$\\sin\\alpha_0 = \\frac{n_2}{n_1}$$",
+    "desc": "<b>Скорость света в среде и предельный угол полного отражения</b><br><strong>α₀</strong> — предельный угол полного отражения,<br><strong>n₁</strong>, <strong>n₂</strong> — показатели преломления сред (n₁ > n₂)."
+  },
+  {
+    "title": "Формула тонкой линзы",
+    "section": "Геометрическая оптика",
+    "formula": "$$\\pm \\frac{1}{F} = \\pm \\frac{1}{d} \\pm \\frac{1}{f}$$",
+    "desc": "<b>Связь фокусного расстояния с расстояниями до предмета и изображения</b><br><strong>F</strong> — фокусное расстояние,<br><strong>d</strong> — расстояние от предмета до линзы,<br><strong>f</strong> — расстояние от изображения до линзы."
+  },
+  {
+    "title": "Линейное (поперечное) увеличение",
+    "section": "Геометрическая оптика",
+    "formula": "$$\\Gamma = \\frac{H}{h}$$",
+    "desc": "<b>Линейное увеличение через размер изображения и предмета</b><br><strong>Γ</strong> — линейное увеличение,<br><strong>H</strong> — размер изображения,<br><strong>h</strong> — размер предмета."
+  },
+  {
+    "title": "Линейное (поперечное) увеличение",
+    "section": "Геометрическая оптика",
+    "formula": "$$\\Gamma = \\frac{f}{d}$$",
+    "desc": "<b>Линейное увеличение через расстояния</b><br><strong>Γ</strong> — линейное увеличение,<br><strong>f</strong> — расстояние от изображения до линзы,<br><strong>d</strong> — расстояние от предмета до линзы."
+  },
+  {
+    "title": "Оптическая сила",
+    "section": "Геометрическая оптика",
+    "formula": "$$D = \\frac{1}{F}$$",
+    "desc": "<b>Измеряется в диоптриях (дптр)</b><br><strong>D</strong> — оптическая сила,<br><strong>F</strong> — фокусное расстояние."
+  },
+  {
+    "title": "Интерференция",
+    "section": "Волновая оптика",
+    "formula": "$$\\delta = m\\lambda$$",
+    "desc": "<b>Условие максимума для оптической разности хода</b><br><strong>δ</strong> — оптическая разность хода,<br><strong>m</strong> — целое число (порядок максимума),<br><strong>λ</strong> — длина волны."
+  },
+  {
+    "title": "Интерференция",
+    "section": "Волновая оптика",
+    "formula": "$$\\delta = \\frac{(2m + 1)}{2}\\lambda$$",
+    "desc": "<b>Условие минимума для оптической разности хода</b><br><strong>δ</strong> — оптическая разность хода,<br><strong>m</strong> — целое число (порядок минимума),<br><strong>λ</strong> — длина волны."
+  },
+  {
+    "title": "Дифракционная решетка",
+    "section": "Волновая оптика",
+    "formula": "$$d \\sin\\theta = m\\lambda$$",
+    "desc": "<b>Условие главных максимумов</b><br><strong>d</strong> — период дифракционной решетки,<br><strong>θ</strong> — угол дифракции,<br><strong>m</strong> — порядок максимума,<br><strong>λ</strong> — длина волны."
+  },
+  {
+    "title": "Релятивистская кинематика и динамика",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$l = l_0 \\sqrt{1 - \\frac{v^2}{c^2}}$$",
+    "desc": "<b>Сокращение длины</b><br><strong>l</strong> — длина движущегося тела,<br><strong>l₀</strong> — собственная длина,<br><strong>𝒗</strong> — скорость тела,<br><strong>c</strong> — скорость света."
+  },
+  {
+    "title": "Релятивистская кинематика и динамика",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$\\tau = \\frac{\\tau_0}{\\sqrt{1 - \\frac{v^2}{c^2}}}$$",
+    "desc": "<b>Замедление времени</b><br><strong>τ</strong> — время в движущейся системе,<br><strong>τ₀</strong> — собственное время,<br><strong>𝒗</strong> — скорость,<br><strong>c</strong> — скорость света."
+  },
+  {
+    "title": "Релятивистская кинематика и динамика",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$E = \\frac{m_0 c^2}{\\sqrt{1 - \\frac{v^2}{c^2}}}$$",
+    "desc": "<b>Полная энергия</b><br><strong>E</strong> — полная энергия,<br><strong>m₀</strong> — масса покоя,<br><strong>𝒗</strong> — скорость,<br><strong>c</strong> — скорость света."
+  },
+  {
+    "title": "Релятивистская кинематика и динамика",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$E = m c^2$$",
+    "desc": "<b>Энергия покоя</b><br><strong>E</strong> — энергия покоя,<br><strong>m</strong> — масса,<br><strong>c</strong> — скорость света."
+  },
+  {
+    "title": "Квантовая физика.",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$E = h \\nu$$",
+    "desc": "<b>Энергия фотона</b><br><strong>E</strong> — энергия фотона,<br><strong>h</strong> — постоянная Планка,<br><strong>ν</strong> — частота."
+  },
+  {
+    "title": "Квантовая физика.",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$E = \\frac{hc}{\\lambda}$$",
+    "desc": "<b>Энергия фотона</b><br><strong>E</strong> — энергия фотона,<br><strong>h</strong> — постоянная Планка,<br><strong>c</strong> — скорость света,<br><strong>λ</strong> — длина волны."
+  },
+  {
+    "title": "Фотоэффект (Уравнение Эйнштейна)",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$h\\nu = A_{вых} + E_{k max}$$",
+    "desc": "<b>Энергия фотона идет на работу выхода и кинетическую энергию</b><br><strong>h</strong> — постоянная Планка,<br><strong>ν</strong> — частота,<br><strong>A_вых</strong> — работа выхода,<br><strong>E_k max</strong> — максимальная кинетическая энергия фотоэлектрона."
+  },
+  {
+    "title": "Фотоэффект (Уравнение Эйнштейна)",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$E_{k max} = eU_з$$",
+    "desc": "<b>Максимальная кинетическая энергия фотоэлектронов</b><br><strong>E_k max</strong> — максимальная кинетическая энергия фотоэлектрона,<br><strong>e</strong> — элементарный заряд,<br><strong>U_з</strong> — задерживающее напряжение."
+  },
+  {
+    "title": "Красная граница фотоэффекта",
+    "section": "СТО. Фотоэффект",
+    "formula": "$$\\nu_{min} = \\frac{A_{вых}}{h}$$",
+    "desc": "<b>Минимальная частота, при которой еще возможен фотоэффект</b><br><strong>ν_min</strong> — минимальная частота (красная граница),<br><strong>A_вых</strong> — работа выхода,<br><strong>h</strong> — постоянная Планка."
+  },
+  {
+    "title": "Постулаты Бора и энергия атома водорода",
+    "section": "Атомная и ядерная",
+    "formula": "$$h\\nu = E_k - E_m$$",
+    "desc": "<b>Правило частот и уровни энергии</b><br><strong>h</strong> — постоянная Планка,<br><strong>ν</strong> — частота излучения,<br><strong>E_k</strong>, <strong>E_m</strong> — энергии уровней (E_k > E_m)."
+  },
+  {
+    "title": "Постулаты Бора и энергия атома водорода",
+    "section": "Атомная и ядерная",
+    "formula": "$$E_n = \\frac{E_1}{n^2}$$",
+    "desc": "<b>Правило частот и уровни энергии</b><br><strong>E_n</strong> — энергия n-го уровня,<br><strong>E₁</strong> — энергия первого уровня,<br><strong>n</strong> — главное квантовое число."
+  },
+  {
+    "title": "Энергия связи ядра",
+    "section": "Атомная и ядерная",
+    "formula": "$$E_{св} = \\Delta m c^2$$",
+    "desc": "<b>Энергия, необходимая для расщепления ядра</b><br><strong>E_св</strong> — энергия связи ядра,<br><strong>Δm</strong> — дефект массы,<br><strong>c</strong> — скорость света."
+  },
+  {
+    "title": "Дефект массы",
+    "section": "Атомная и ядерная",
+    "formula": "$$\\Delta m = Zm_p + Nm_n - m_{я}$$",
+    "desc": "<b>Дефект массы</b><br><strong>Z</strong> — число протонов,<br><strong>m_p</strong> — масса протона,<br><strong>N</strong> — число нейтронов,<br><strong>m_n</strong> — масса нейтрона,<br><strong>m_я</strong> — масса ядра."
+  },
+  {
+    "title": "Закон радиоактивного распада",
+    "section": "Атомная и ядерная",
+    "formula": "$$N = N_0 2^{-\\frac{t}{T}}$$",
+    "desc": "<b>Уменьшение числа нераспавшихся ядер со временем</b><br><strong>N</strong> — число нераспавшихся ядер,<br><strong>N₀</strong> — начальное число ядер,<br><strong>t</strong> — время,<br><strong>T</strong> — период полураспада."
+  }
+];
+
+      const searchInput = document.getElementById("search");
+      const sectionSelect = document.getElementById("section");
+      const grid = document.getElementById("grid");
+
+      const uniqueSections = [...new Set(formulas.map((f) => f.section))];
+      uniqueSections.forEach((s) => {
+        const opt = document.createElement("option");
+        opt.value = s;
+        opt.textContent = s;
+        sectionSelect.appendChild(opt);
+      });
+
+      function render() {
+const query = searchInput.value.toLowerCase().trim();
+const selectedSection = sectionSelect.value;
+
+// Разбиваем запрос на отдельные слова и убираем пустые
+const queryWords = query.split(/\s+/).filter(word => word.length > 0);
+
+const filtered = formulas.filter((f) => {
+    const matchSection = selectedSection === "all" || f.section === selectedSection;
+    
+    // Если поисковая строка пустая — пропускаем проверку по словам
+    let matchSearch = true;
+    if (queryWords.length > 0) {
+        // Объединяем все поля в одну строку для поиска
+        const combinedText = (f.title + " " + f.desc + " " + f.section).toLowerCase();
+        
+        // КАЖДОЕ слово из запроса должно встречаться в объединённом тексте
+        matchSearch = queryWords.every(word => combinedText.includes(word));
+    }
+    
+    return matchSection && matchSearch;
+});
+
+
+        grid.innerHTML = filtered.length
+          ? ""
+          : '<div class="empty">Ничего не найдено</div>';
+
+        filtered.forEach((f) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
                     <span class="section-tag">${f.section}</span>
                     <h3>${f.title}</h3>
                     <div class="formula">${f.formula}</div>
                     <div class="desc">${f.desc}</div>
                 `;
-                grid.appendChild(card);
-            });
+          grid.appendChild(card);
+        });
 
-            if (window.innerWidth <= 768) {
-                grid.scrollLeft = 0;
-            }
-
-            renderMathInElement(grid, {
-                delimiters: [
-                    { left: '$$', right: '$$', display: true },
-                    { left: '\\(', right: '\\)', display: false }
-                ],
-                throwOnError: false,
-                strict: false
-            });
+        if (window.innerWidth <= 768) {
+          grid.scrollLeft = 0;
         }
 
-        searchInput.addEventListener('input', render);
+        renderMathInElement(grid, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "\\(", right: "\\)", display: false },
+          ],
+          throwOnError: false,
+          strict: false,
+        });
+      }
+
+      searchInput.addEventListener('input', () => {
+            sectionSelect.value = 'all';
+            render();
+        });
         sectionSelect.addEventListener('change', render);
 
-        render();
-    </script>
-</body>
+
+      render();
+   </script>
+  </body>
 </html>
