@@ -152,7 +152,21 @@
         padding: 40px;
         font-size: 18px;
       }
+      .sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
+.content {
+  margin-top: 800px; /* Компенсация высоты header */
+  padding: 20px;
+}
       /* ========================================== */
       /* МОБИЛЬНАЯ ВЕРСИЯ СО СВАЙПОМ (Scroll Snap)  */
       /* ========================================== */
@@ -199,22 +213,12 @@
         .card:last-child {
           margin-right: 20px;
         }
-      }
-      .sticky-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: white;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.content {
-  margin-top: 100px; /* Компенсация высоты header */
+        .content {
+  margin-top: 130px; /* Компенсация высоты header */
   padding: 20px;
 }
+      }
+
 
     </style>
   </head>
