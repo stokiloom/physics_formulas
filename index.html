@@ -200,13 +200,30 @@
           margin-right: 20px;
         }
       }
+      .sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.content {
+  margin-top: 80px; /* Компенсация высоты header */
+  padding: 20px;
+}
+
     </style>
   </head>
   <body>
-    <h1>Справочник формул по физике</h1>
+    <!-- <div class="content">
+    <h1>Формулы физика</h1>
     <p class="subtitle">Все формулы школьного курса<br>(под редакцией Мухина Е.В.)</p>
-
-    <div class="controls">
+    </div> -->
+    <div class="controls sticky-header">
       <input
         type="text"
         id="search"
@@ -217,7 +234,7 @@
       </select>
     </div>
 
-    <div class="grid" id="grid"></div>
+    <div class="grid content" id="grid"></div>
 
     <script>
         // Уведомление
@@ -1503,6 +1520,211 @@ const formulas = [
     "section": "Приставки",
     "formula": "$$\\text{ф} = 10^{-15}$$",
     "desc": "<b>Приставка Фемто</b><br><strong>Обозначение:</strong> ф<br><strong>Множитель:</strong> 10⁻¹⁵"
+  },
+
+  {
+    "title": "Путь",
+    "section": "Система СИ",
+    "formula": "$$s$$",
+    "desc": "<b>Путь</b><br><strong>Единица:</strong> метр (м)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> L, s"
+  },
+  {
+    "title": "Перемещение",
+    "section": "Система СИ",
+    "formula": "$$\\vec{r}$$",
+    "desc": "<b>Перемещение</b><br><strong>Единица:</strong> метр (м)<br><strong>Тип:</strong> вектор<br><strong>Обозначение:</strong> S⃗"
+  },
+  {
+    "title": "Время",
+    "section": "Система СИ",
+    "formula": "$$t$$",
+    "desc": "<b>Время</b><br><strong>Единица:</strong> секунда (с)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> t, τ"
+  },
+  {
+    "title": "Скорость",
+    "section": "Система СИ",
+    "formula": "$$\\vec{v}$$",
+    "desc": "<b>Скорость</b><br><strong>Единица:</strong> м/с<br><strong>Тип:</strong> вектор<br><strong>Обозначение:</strong> v"
+  },
+  {
+    "title": "Ускорение",
+    "section": "Система СИ",
+    "formula": "$$\\vec{a}$$",
+    "desc": "<b>Ускорение</b><br><strong>Единица:</strong> м/с²<br><strong>Тип:</strong> вектор<br><strong>Обозначение:</strong> a⃗"
+  },
+  {
+    "title": "Частота",
+    "section": "Система СИ",
+    "formula": "$$\\nu$$",
+    "desc": "<b>Частота</b><br><strong>Единица:</strong> Герц (Гц)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> ν"
+  },
+  {
+    "title": "Период",
+    "section": "Система СИ",
+    "formula": "$$T$$",
+    "desc": "<b>Период</b><br><strong>Единица:</strong> секунда (с)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> T"
+  },
+  {
+    "title": "Угловая скорость",
+    "section": "Система СИ",
+    "formula": "$$\\omega$$",
+    "desc": "<b>Угловая скорость</b><br><strong>Единица:</strong> рад/с<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> ω"
+  },
+  {
+    "title": "Площадь",
+    "section": "Система СИ",
+    "formula": "$$S$$",
+    "desc": "<b>Площадь</b><br><strong>Единица:</strong> м²<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> S"
+  },
+  {
+    "title": "Объем",
+    "section": "Система СИ",
+    "formula": "$$V$$",
+    "desc": "<b>Объем</b><br><strong>Единица:</strong> м³<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> V"
+  },
+  {
+    "title": "Масса",
+    "section": "Система СИ",
+    "formula": "$$m$$",
+    "desc": "<b>Масса</b><br><strong>Единица:</strong> килограмм (кг)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> m"
+  },
+  {
+    "title": "Плотность",
+    "section": "Система СИ",
+    "formula": "$$\\rho$$",
+    "desc": "<b>Плотность</b><br><strong>Единица:</strong> кг/м³<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> ρ"
+  },
+  {
+    "title": "Сила",
+    "section": "Система СИ",
+    "formula": "$$\\vec{F}$$",
+    "desc": "<b>Сила</b><br><strong>Единица:</strong> Ньютон (Н)<br><strong>Тип:</strong> вектор<br><strong>Обозначение:</strong> F⃗"
+  },
+  {
+    "title": "Импульс",
+    "section": "Система СИ",
+    "formula": "$$\\vec{p}$$",
+    "desc": "<b>Импульс</b><br><strong>Единица:</strong> кг·м/с<br><strong>Тип:</strong> вектор<br><strong>Обозначение:</strong> p"
+  },
+  {
+    "title": "Работа, энергия",
+    "section": "Система СИ",
+    "formula": "$$A, E, W, Q, U$$",
+    "desc": "<b>Работа, энергия</b><br><strong>Единица:</strong> Джоуль (Дж)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> A, E, W, Q, U"
+  },
+  {
+    "title": "Мощность",
+    "section": "Система СИ",
+    "formula": "$$P$$",
+    "desc": "<b>Мощность</b><br><strong>Единица:</strong> Ватт (Вт)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> P"
+  },
+  {
+    "title": "Давление",
+    "section": "Система СИ",
+    "formula": "$$p$$",
+    "desc": "<b>Давление</b><br><strong>Единица:</strong> Паскаль (Па)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> p"
+  },
+  {
+    "title": "Температура",
+    "section": "Система СИ",
+    "formula": "$$T$$",
+    "desc": "<b>Температура</b><br><strong>Единица:</strong> Кельвин (К)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> t (°C), T (K)"
+  },
+  {
+    "title": "Количество вещества",
+    "section": "Система СИ",
+    "formula": "$$\\nu$$",
+    "desc": "<b>Количество вещества</b><br><strong>Единица:</strong> моль<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> ν"
+  },
+  {
+    "title": "Молярная масса",
+    "section": "Система СИ",
+    "formula": "$$M$$",
+    "desc": "<b>Молярная масса</b><br><strong>Единица:</strong> кг/моль<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> M"
+  },
+  {
+    "title": "Концентрация",
+    "section": "Система СИ",
+    "formula": "$$n$$",
+    "desc": "<b>Концентрация</b><br><strong>Единица:</strong> 1/м³<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> n"
+  },
+  {
+    "title": "Теплоемкость",
+    "section": "Система СИ",
+    "formula": "$$C$$",
+    "desc": "<b>Теплоемкость</b><br><strong>Единица:</strong> Дж/К<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> C"
+  },
+  {
+    "title": "Удельная теплоемкость",
+    "section": "Система СИ",
+    "formula": "$$c$$",
+    "desc": "<b>Удельная теплоемкость</b><br><strong>Единица:</strong> Дж/(кг·К)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> c"
+  },
+  {
+    "title": "Электрический ток",
+    "section": "Система СИ",
+    "formula": "$$I$$",
+    "desc": "<b>Электрический ток</b><br><strong>Единица:</strong> Ампер (А)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> I"
+  },
+  {
+    "title": "Электрический заряд",
+    "section": "Система СИ",
+    "formula": "$$q$$",
+    "desc": "<b>Электрический заряд</b><br><strong>Единица:</strong> Кулон (Кл)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> q"
+  },
+  {
+    "title": "Напряжение, потенциал",
+    "section": "Система СИ",
+    "formula": "$$\\varphi, U$$",
+    "desc": "<b>Напряжение, потенциал</b><br><strong>Единица:</strong> Вольт (В)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> φ, U"
+  },
+  {
+    "title": "Напряженность электрического поля",
+    "section": "Система СИ",
+    "formula": "$$\\vec{E}$$",
+    "desc": "<b>Напряженность электрического поля</b><br><strong>Единица:</strong> В/м<br><strong>Тип:</strong> вектор<br><strong>Обозначение:</strong> E⃗"
+  },
+  {
+    "title": "Электрическое сопротивление",
+    "section": "Система СИ",
+    "formula": "$$R$$",
+    "desc": "<b>Электрическое сопротивление</b><br><strong>Единица:</strong> Ом (Ом)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> R"
+  },
+  {
+    "title": "Удельное сопротивление",
+    "section": "Система СИ",
+    "formula": "$$\\rho$$",
+    "desc": "<b>Удельное сопротивление</b><br><strong>Единица:</strong> Ом·м<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> ρ"
+  },
+  {
+    "title": "Электрическая емкость",
+    "section": "Система СИ",
+    "formula": "$$C$$",
+    "desc": "<b>Электрическая емкость</b><br><strong>Единица:</strong> Фарад (Ф)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> C"
+  },
+  {
+    "title": "Магнитная индукция",
+    "section": "Система СИ",
+    "formula": "$$\\vec{B}$$",
+    "desc": "<b>Магнитная индукция</b><br><strong>Единица:</strong> Тесла (Тл)<br><strong>Тип:</strong> вектор<br><strong>Обозначение:</strong> B⃗"
+  },
+  {
+    "title": "Магнитный поток",
+    "section": "Система СИ",
+    "formula": "$$\\Phi$$",
+    "desc": "<b>Магнитный поток</b><br><strong>Единица:</strong> Вебер (Вб)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> Φ"
+  },
+  {
+    "title": "Индуктивность",
+    "section": "Система СИ",
+    "formula": "$$L$$",
+    "desc": "<b>Индуктивность</b><br><strong>Единица:</strong> Генри (Гн)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> L"
+  },
+  {
+    "title": "Оптическая сила линзы",
+    "section": "Система СИ",
+    "formula": "$$D$$",
+    "desc": "<b>Оптическая сила линзы</b><br><strong>Единица:</strong> диоптрия (дптр)<br><strong>Тип:</strong> скаляр<br><strong>Обозначение:</strong> D"
   }
 
 
