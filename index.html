@@ -21,6 +21,10 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script>
     <style>
+      html, body {
+  overflow-x: hidden; /* странице некуда и незачем скроллиться вбок */
+      }
+
       :root {
         --bg: #f4f6f8;
         --card: #ffffff;
@@ -174,53 +178,57 @@
       /* МОБИЛЬНАЯ ВЕРСИЯ СО СВАЙПОМ (Scroll Snap)  */
       /* ========================================== */
       @media (max-width: 768px) {
-        body {
-          padding: 15px;
-        }
-        .controls {
-          flex-direction: column;
-          gap: 10px;
-          margin-bottom: 20px;
-        }
-        .controls input,
-        .controls select {
-          width: 100%;
-        }
-        .controls input,
-        .controls select {
-          width: 100%;
-          min-width: unset; /* Убираем min-width: 200px */
-          box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
-        }
-        .grid {
-          display: flex;
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          -webkit-overflow-scrolling: touch;
-          gap: 16px;
-          padding: 10px 5px 30px 5px;
-          margin: 0 -5px;
-          scrollbar-width: none;
-          align-items: stretch; /* Гарантирует одинаковую высоту карточек при свайпе */
-        }
-        .grid::-webkit-scrollbar {
-          display: none;
-        }
+  body {
+    padding: 15px;
+  }
 
-        .card {
-          flex: 0 0 85vw;
-          scroll-snap-align: center;
-          height: 52vh;
-        }
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
 
-        .card:last-child {
-          margin-right: 20px;
-        }
-        .content {
-          margin-top: 130px; /* Компенсация высоты header */
-          padding: 20px;
-        }
-      }
+  .controls input,
+  .controls select {
+    width: 100%;
+    min-width: unset;
+    box-sizing: border-box;
+  }
+
+  .grid {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;               /* скроллится ТОЛЬКО этот блок */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain; /* свайп не "протягивает" страницу */
+    scrollbar-width: none;
+    padding: 10px 4px 30px;
+    align-items: stretch;
+    /* БЕЗ отрицательных margin и БЕЗ width/max-width — блок ровно по ширине родителя */
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    flex: 0 0 85%;                  /* % от ширины .grid, а не vw — надёжнее */
+    scroll-snap-align: center;
+    height: auto;
+    min-height: 45vh;
+  }
+
+  .card:last-child {
+    margin-right: 16px;
+  }
+
+  .content {
+    margin-top: 130px;
+    padding: 15px;
+  }
+}
+
     </style>
   </head>
   <body>
@@ -2765,8 +2773,15 @@
         sectionSelect.value = "all";
         render();
       });
-      sectionSelect.addEventListener("change", render);
-
+      
+      sectionSelect.addEventListener("change", () => {
+        // searchInput.value = ""; // Очищаем строку поиска
+        render(); // Перерисовываем сетку
+      });
+      // sectionSelect.addEventListener("select", () => {
+      //   searchInput.value = ""; // Очищаем строку поиска
+      //   render(); // Перерисовываем сетку
+      // });
       render();
     </script>
   </body>
