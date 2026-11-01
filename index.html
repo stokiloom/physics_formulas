@@ -1,28 +1,18 @@
 <!doctype html>
 <html lang="ru">
   <head>
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate"
-    />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Формулы по физике (ЦТ / Тренажер)</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"></script>
     <style>
       html, body {
-  overflow-x: hidden; /* странице некуда и незачем скроллиться вбок */
+        overflow-x: hidden;
       }
 
       :root {
@@ -32,28 +22,50 @@
         --border: #dfe4ea;
         --tag-bg: #eef2f5;
         --tag-text: #7f8c8d;
+        
+        /* 🎨 Палитра цветов для тем (будет применяться только к корешку и тегу темы) */
+        --color-kinematics: #1E88E5;
+        --color-dynamics: #E67E22;
+        --color-conservation: #27AE60;
+        --color-statics: #8E44AD;
+        --color-mkt: #C0392B;
+        --color-thermo: #D35400;
+        --color-electrostatics: #F39C12;
+        --color-dc: #16A085;
+        --color-magnetic: #2C3E50;
+        --color-waves: #E84393;
+        --color-optics: #6C5CE7;
+        --color-sto: #00CEC9;
+        --color-atomic: #FDCB6E;
+        --color-constants: #636E72;
+        --color-prefixes: #B2BEC3;
+        --color-si: #0984E3;
+        --color-periodic: #00B894;
+        --color-math: #E17055;
+        --color-default: #34495E;
       }
+
       body {
-        font-family:
-          system-ui,
-          -apple-system,
-          sans-serif;
+        font-family: system-ui, -apple-system, sans-serif;
         background: var(--bg);
         color: var(--accent);
         margin: 0;
         padding: 20px;
       }
+
       h1 {
         text-align: center;
         margin-bottom: 10px;
         font-size: 24px;
       }
+
       .subtitle {
         text-align: center;
         color: var(--tag-text);
         margin-bottom: 25px;
         font-size: 14px;
       }
+
       .controls {
         display: flex;
         gap: 15px;
@@ -61,67 +73,96 @@
         margin: 0 auto 30px;
         flex-wrap: wrap;
       }
-      .controls input,
-      .controls select {
-        flex: 1;
-        padding: 12px 15px;
-        font-size: 16px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--card);
-        min-width: 200px;
-        outline: none;
-      }
-      .controls input:focus,
-      .controls select:focus {
-        border-color: #3498db;
-      }
 
-      /* Базовая сетка для десктопа */
+.controls input,
+.controls select {
+    flex: 1;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    min-width: 200px;
+    outline: none;
+    transition: border-color 0.2s;
+    
+    /* 🔧 ИСПРАВЛЕНИЕ ВЫСОТЫ */
+    box-sizing: border-box;
+    height: 48px;
+    line-height: 1.2;
+    font-family: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* 🔽 Кастомная стрелка для select */
+.controls select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%237f8c8d' d='M6 8L0 0h12z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+.controls input:focus,
+.controls select:focus {
+    border-color: #3498db;
+}
+
+
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
         gap: 20px;
         max-width: 1400px;
         margin: 0 auto;
-        grid-auto-rows: 1fr; /* Заставляет все карточки в ряду быть одинаковой высоты */
+        grid-auto-rows: 1fr;
       }
 
+      /* === СТИЛИ КАРТОЧКИ === */
       .card {
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 12px;
-        padding: 20px;
+        padding: 20px 20px 20px 24px; /* Чуть уменьшен левый отступ из-за тонкого корешка */
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
-        /* --- НОВЫЕ СВОЙСТВА ДЛЯ ПРИЖАТИЯ К НИЗУ --- */
+        transition: transform 0.2s, box-shadow 0.2s;
         display: flex;
         flex-direction: column;
         height: 100%;
         box-sizing: border-box;
+        position: relative;
+        
+        /* ТОНКИЙ КОРЕШОК */
+        border-left: 4px solid var(--topic-color, var(--color-default));
       }
+
       .card:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
       }
-      .card h3 {
-        margin: 0 0 10px 0;
-        font-size: 17px;
-        color: #2980b9;
-      }
+
+      /* Название темы (тег) - ЦВЕТНОЕ */
       .card .section-tag {
         display: inline-block;
         font-size: 11px;
-        background: var(--tag-bg);
+        background: color-mix(in srgb, var(--topic-color, var(--color-default)) 15%, white);
+        color: var(--topic-color, var(--color-default));
         padding: 4px 8px;
         border-radius: 4px;
         margin-bottom: 12px;
-        color: var(--tag-text);
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+      }
+
+      /* Название формулы - СТАРЫЙ ЦВЕТ (как в исходном файле) */
+      .card h3 {
+        margin: 0 0 10px 0;
+        font-size: 17px;
+        color: #2980b9; /* Оригинальный цвет */
       }
 
       .card .formula {
@@ -132,7 +173,7 @@
         max-width: 100%;
         overflow-x: auto;
         line-height: 1.8;
-        flex: 1; /* Занимает всё свободное пространство */
+        flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -143,15 +184,16 @@
         overflow-x: auto;
         overflow-y: hidden;
       }
+
       .card .desc {
         font-size: 14px;
         color: #555;
         line-height: 1.4;
-        /* --- МАГИЯ: этот отступ займет всё свободное пространство и прижмет блок к низу --- */
         margin-top: auto;
         border-top: 1px dashed var(--border);
         padding-top: 10px;
       }
+
       .empty {
         text-align: center;
         color: #95a5a6;
@@ -159,89 +201,60 @@
         padding: 40px;
         font-size: 18px;
       }
+
       .sticky-header {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 100;
-        background: white;
-        padding: 15px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        padding: 15px 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
       }
 
       .content {
-        margin-top: 80px; /* Компенсация высоты header */
+        margin-top: 90px;
         padding: 20px;
       }
+
       /* ========================================== */
-      /* МОБИЛЬНАЯ ВЕРСИЯ СО СВАЙПОМ (Scroll Snap)  */
+      /* МОБИЛЬНАЯ ВЕРСИЯ */
       /* ========================================== */
       @media (max-width: 768px) {
-  body {
-    padding: 15px;
-  }
-
-  .controls {
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .controls input,
-  .controls select {
-    width: 100%;
-    min-width: unset;
-    box-sizing: border-box;
-  }
-
-  .grid {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;               /* скроллится ТОЛЬКО этот блок */
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain; /* свайп не "протягивает" страницу */
-    scrollbar-width: none;
-    padding: 10px 4px 30px;
-    align-items: stretch;
-    /* БЕЗ отрицательных margin и БЕЗ width/max-width — блок ровно по ширине родителя */
-  }
-
-  .grid::-webkit-scrollbar {
-    display: none;
-  }
-
-  .card {
-    flex: 0 0 85%;                  /* % от ширины .grid, а не vw — надёжнее */
-    scroll-snap-align: center;
-    height: auto;
-    min-height: 45vh;
-  }
-
-  .card:last-child {
-    margin-right: 16px;
-  }
-
-  .content {
-    margin-top: 130px;
-    padding: 15px;
-  }
-}
-
+        body { padding: 15px; }
+        .controls { flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .controls input, .controls select { width: 100%; min-width: unset; box-sizing: border-box; }
+        
+        .grid {
+          display: flex;
+          gap: 16px;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          overscroll-behavior-x: contain;
+          scrollbar-width: none;
+          padding: 10px 4px 30px;
+          align-items: stretch;
+        }
+        .grid::-webkit-scrollbar { display: none; }
+        
+        .card {
+          flex: 0 0 85%;
+          scroll-snap-align: center;
+          height: auto;
+          min-height: 45vh;
+          padding: 20px 20px 20px 24px;
+          border-left-width: 4px; /* Сохраняем тонкий корешок и на мобильных */
+        }
+        .content { margin-top: 130px; padding: 15px; }
+      }
     </style>
   </head>
   <body>
-    <!-- <div class="content">
-    <h1>Формулы физика</h1>
-    <p class="subtitle">Все формулы школьного курса<br>(под редакцией Мухина Е.В.)</p>
-    </div> -->
     <div class="controls sticky-header">
-      <input
-        type="text"
-        id="search"
-        placeholder="Поиск по названию или описанию..."
-      />
+      <input type="text" id="search" placeholder="Поиск по названию или описанию..." />
       <select id="section">
         <option value="all">Все разделы</option>
       </select>
@@ -250,47 +263,56 @@
     <div class="grid content" id="grid"></div>
 
     <script>
-      // Уведомление
+      // 🎨 Словарь соответствия тем и цветов (CSS переменных)
+      const topicColors = {
+        "Кинематика": "var(--color-kinematics)",
+        "Динамика": "var(--color-dynamics)",
+        "Законы сохранения": "var(--color-conservation)",
+        "Статика": "var(--color-statics)",
+        "Основы МКТ": "var(--color-mkt)",
+        "Термодинамика": "var(--color-thermo)",
+        "Электростатика": "var(--color-electrostatics)",
+        "Постоянный ток": "var(--color-dc)",
+        "Магнитное поле": "var(--color-magnetic)",
+        "Колебания и волны": "var(--color-waves)",
+        "Геометрическая оптика": "var(--color-optics)",
+        "Волновая оптика": "var(--color-optics)",
+        "СТО. Фотоэффект": "var(--color-sto)",
+        "Атомная и ядерная": "var(--color-atomic)",
+        "Константы": "var(--color-constants)",
+        "Приставки": "var(--color-prefixes)",
+        "Система СИ": "var(--color-si)",
+        "Таблица Менделеева": "var(--color-periodic)",
+        "Математика": "var(--color-math)"
+      };
+
       function showToast(message) {
         const toast = document.createElement("div");
         toast.textContent = message;
         toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0,0,0,0.8);
-        color: white;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-size: 14px;
-        z-index: 9999;
-        animation: fadeInOut 2s ease-in-out;
-    `;
+          position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+          background: rgba(0,0,0,0.85); color: white; padding: 12px 24px;
+          border-radius: 8px; font-size: 14px; z-index: 9999;
+          animation: fadeInOut 2s ease-in-out; pointer-events: none;
+        `;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
       }
 
-      // Анимация для уведомления
       const style = document.createElement("style");
       style.textContent = `
-    @keyframes fadeInOut {
-        0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-        15%, 85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-    }
-`;
+        @keyframes fadeInOut {
+          0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+          15%, 85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+          100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+      `;
       document.head.appendChild(style);
 
-      // Блокировка сохранения страницы
       document.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.key.toLowerCase() === "s") {
+        if (e.ctrlKey && (e.key.toLowerCase() === "s" || e.key.toLowerCase() === "p")) {
           e.preventDefault();
-          showToast("Сохранение страницы запрещено");
-        }
-        if (e.ctrlKey && e.key.toLowerCase() === "p") {
-          e.preventDefault();
-          showToast("Печать запрещена");
+          showToast("Сохранение и печать запрещены");
         }
         if (e.ctrlKey && e.key.toLowerCase() === "a") {
           if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
@@ -302,7 +324,7 @@
 
       document.addEventListener("contextmenu", (e) => {
         e.preventDefault();
-        showToast("Сохранение страницы запрещено");
+        showToast("Контекстное меню отключено");
       });
 
       window.addEventListener("beforeunload", (e) => {
@@ -2695,6 +2717,7 @@
         },
       ];
 
+
       const searchInput = document.getElementById("search");
       const sectionSelect = document.getElementById("section");
       const grid = document.getElementById("grid");
@@ -2710,48 +2733,34 @@
       function render() {
         const query = searchInput.value.toLowerCase().trim();
         const selectedSection = sectionSelect.value;
-
-        // Разбиваем запрос на отдельные слова и убираем пустые
         const queryWords = query.split(/\s+/).filter((word) => word.length > 0);
 
         const filtered = formulas.filter((f) => {
-          const matchSection =
-            selectedSection === "all" || f.section === selectedSection;
-
-          // Если поисковая строка пустая — пропускаем проверку по словам
+          const matchSection = selectedSection === "all" || f.section === selectedSection;
           let matchSearch = true;
           if (queryWords.length > 0) {
-            // Объединяем все поля в одну строку для поиска
-            const combinedText = (
-              f.title +
-              " " +
-              f.desc +
-              " " +
-              f.section
-            ).toLowerCase();
-
-            // КАЖДОЕ слово из запроса должно встречаться в объединённом тексте
-            matchSearch = queryWords.every((word) =>
-              combinedText.includes(word),
-            );
+            const combinedText = (f.title + " " + f.desc + " " + f.section).toLowerCase();
+            matchSearch = queryWords.every((word) => combinedText.includes(word));
           }
-
           return matchSection && matchSearch;
         });
 
-        grid.innerHTML = filtered.length
-          ? ""
-          : '<div class="empty">Ничего не найдено</div>';
+        grid.innerHTML = filtered.length ? "" : '<div class="empty">Ничего не найдено</div>';
 
         filtered.forEach((f) => {
           const card = document.createElement("div");
           card.className = "card";
+          
+          // 🎯 Назначаем цвет темы карточке (будет использован в CSS для корешка и тега)
+          const themeColor = topicColors[f.section] || "var(--color-default)";
+          card.style.setProperty('--topic-color', themeColor);
+
           card.innerHTML = `
-                    <span class="section-tag">${f.section}</span>
-                    <h3>${f.title}</h3>
-                    <div class="formula">${f.formula}</div>
-                    <div class="desc">${f.desc}</div>
-                `;
+            <span class="section-tag">${f.section}</span>
+            <h3>${f.title}</h3>
+            <div class="formula">${f.formula}</div>
+            <div class="desc">${f.desc}</div>
+          `;
           grid.appendChild(card);
         });
 
@@ -2775,13 +2784,18 @@
       });
       
       sectionSelect.addEventListener("change", () => {
-        // searchInput.value = ""; // Очищаем строку поиска
-        render(); // Перерисовываем сетку
+        searchInput.value = ""; // Очищаем строку поиска
+        render();
       });
-      // sectionSelect.addEventListener("select", () => {
-      //   searchInput.value = ""; // Очищаем строку поиска
-      //   render(); // Перерисовываем сетку
-      // });
+      let wasFocused = false;
+    searchInput.addEventListener('mouseenter', () => {
+        if (wasFocused && searchInput.value) {
+            searchInput.value = '';
+             sectionSelect.value = "all";
+        }
+       wasFocused = true;
+       render();
+        });
       render();
     </script>
   </body>
